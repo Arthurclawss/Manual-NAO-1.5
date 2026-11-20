@@ -1,6 +1,19 @@
-export const MODULE_STORAGE_KEY = 'manual-now-modules'
+import { lessons } from './lessons.js'
 
-export const defaultModules = [
+export const MODULE_STORAGE_KEY = 'manual-now-modules'
+export const MODULE_STORAGE_EVENT = 'manual-now-modules-updated'
+
+const introductoryLessons = {
+  2: ['Preparar uma sessão', 'Antes de começar, identifique o responsável pelo equipamento, reserve espaço para a atividade e consulte o procedimento de preparação do laboratório.', 'Monte uma lista com o local, os materiais e as verificações que a equipe deve fazer antes de usar o NAO.'],
+  3: ['Identificar componentes', 'Use a imagem do manual para localizar cabeça, tronco, braços e pernas. Observe onde há articulações e pense em quais movimentos cada parte permite.', 'Faça um desenho e indique as partes observadas. Escolha uma delas e explique sua função.'],
+  4: ['Planejar movimentos', 'Descreva uma postura inicial, um movimento e uma postura final. Para uma demonstração em equipe, combine uma forma de interromper a atividade e mantenha a área livre.', 'Escreva a sequência de um aceno em três etapas. Discuta como o espaço ao redor muda o planejamento.'],
+  5: ['Relacionar percepção e resposta', 'Em uma atividade interativa, separe o que o robô recebe do ambiente da ação que ele realiza em resposta. A mesma ação pode ser planejada para sinais diferentes.', 'Escolha um sinal, como um som ou uma imagem, e descreva a resposta que você espera. O que deve acontecer se o sinal não for reconhecido?'],
+  6: ['Planejar uma interação', 'Uma interação tem uma mensagem, um público e um momento para a resposta. Escolha um canal coerente com a atividade, como fala, gestos ou sinais visuais.', 'Escreva uma saudação curta. Depois, desenhe uma versão da mesma interação que possa ser entendida sem áudio.'],
+  7: ['Dividir um comportamento em etapas', 'Organize um comportamento em entrada, decisão e ação. Antes de testar no robô, revise a sequência no papel ou no ambiente de programação usado pela equipe.', 'Descreva em pseudocódigo uma saudação que só aconteça após um sinal. Inclua o que fazer quando o sinal não chegar.'],
+  8: ['Revisar uma atividade antes de executar', 'Combine quem acompanha a atividade e como interrompê-la. Revise o espaço, a sequência e as orientações do responsável pelo equipamento.', 'Prepare uma lista de verificação para uma das atividades anteriores e revise a lista com outra pessoa.'],
+}
+
+const previousModules = [
   {
     id: 1,
     tag: 'Módulo 1',
@@ -139,39 +152,111 @@ export const defaultModules = [
     icon: '08',
     sections: [],
   },
-]
+].map((module) => {
+  const lesson = introductoryLessons[module.id]
+  if (!lesson) return module
+
+  const [title, intro, activity] = lesson
+  return {
+    ...module,
+    route: `/modulos/${module.id}`,
+    intro,
+    sections: [{ title, blocks: [{ type: 'text', text: activity }] }],
+  }
+})
+
+export const defaultModules = previousModules.map((previous) => {
+  const { title, summary, intro, topics, supplement } = lessons[previous.id]
+  return {
+    ...previous,
+    title,
+    summary,
+    intro,
+    sections: [...topics, ...(supplement ? [supplement] : [])].map(([heading, text, reference]) => ({
+      title: heading,
+      blocks: reference
+        ? [{ type: 'text', text }, { type: 'link', label: reference[0], url: reference[1] }]
+        : [{ type: 'text', text }],
+    })),
+  }
+})
+
+function normalizeSections(sections = []) {
+  return sections.map((section) => ({
+    ...section,
+    blocks: section.blocks?.length
+      ? section.blocks
+      : [{ type: 'text', text: section.body || '' }],
+  }))
+}
+
+function withoutAccents(text) {
+  return text.normalize('NFD').replace(/\p{Mark}/gu, '')
+}
 
 function normalizeModules(modules) {
-  return modules.map((module) => ({
-    ...module,
-    sections: (module.sections || []).map((section) => ({
-      ...section,
-      blocks: section.blocks?.length
-        ? section.blocks
-        : [
-            {
-              type: 'text',
-              text: section.body || '',
-            },
-          ],
-    })),
-  }))
+  const saved = new Map(modules.map((module) => [module.id, module]))
+  return defaultModules.map((defaults, index) => {
+    const stored = saved.get(defaults.id)
+    const previous = previousModules[index]
+    const lesson = { ...defaults, ...stored, route: defaults.route }
+    for (const field of ['tag', 'title', 'summary', 'intro']) {
+      if (typeof stored?.[field] === 'string' && withoutAccents(stored[field]) === withoutAccents(previous[field])) {
+        lesson[field] = defaults[field]
+      }
+    }
+    const sections = normalizeSections(lesson.sections || [])
+    const isPlaceholder = typeof stored?.intro === 'string' && withoutAccents(stored.intro) === 'Conteudo em preparacao.' && sections.length === 0
+    if (isPlaceholder) lesson.intro = defaults.intro
+    const sectionSnapshot = JSON.stringify(sections)
+    const hasFormerLesson = lessons[defaults.id].supplement && sectionSnapshot === JSON.stringify(defaults.sections.slice(0, -1))
+    if (isPlaceholder || hasFormerLesson || sectionSnapshot === JSON.stringify(normalizeSections(previous.sections))) {
+      return { ...lesson, sections: defaults.sections }
+    }
+    return { ...lesson, sections }
+  })
+}
+
+const initialModules = normalizeModules(defaultModules)
+let cachedStorage = null
+let cachedModules = initialModules
+
+export function getInitialModules() {
+  return initialModules
 }
 
 export function loadModules() {
   try {
     const storedModules = window.localStorage.getItem(MODULE_STORAGE_KEY)
-    return normalizeModules(storedModules ? JSON.parse(storedModules) : defaultModules)
+    if (storedModules === cachedStorage) return cachedModules
+
+    cachedModules = storedModules ? normalizeModules(JSON.parse(storedModules)) : initialModules
+    cachedStorage = storedModules
+    return cachedModules
   } catch {
-    return normalizeModules(defaultModules)
+    return initialModules
   }
 }
 
 export function saveModules(modules) {
   window.localStorage.setItem(MODULE_STORAGE_KEY, JSON.stringify(modules))
+  window.dispatchEvent(new Event(MODULE_STORAGE_EVENT))
 }
 
 export function resetModules() {
   window.localStorage.removeItem(MODULE_STORAGE_KEY)
-  return normalizeModules(defaultModules)
+  window.dispatchEvent(new Event(MODULE_STORAGE_EVENT))
+  return initialModules
+}
+
+export function isModuleCompleted(module) {
+  return (module?.progress || 0) >= 100
+}
+
+export function getModulePrerequisite(modules, id) {
+  return modules.find((module) => module.id < id && !isModuleCompleted(module))
+}
+
+export function getCurrentModule(modules) {
+  return modules.find((module) => !isModuleCompleted(module)) || modules.at(-1)
 }

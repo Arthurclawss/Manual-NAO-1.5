@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cloud, ArrowRight, Sparkles } from "lucide-react";
+
+const MotionLink = motion.create(Link);
 
 export default function ModuleCard({
   id = "01",
@@ -11,12 +14,13 @@ export default function ModuleCard({
   icon,
   progress = 0,
   isLocked = false,
-  unlockLevel,
-  onClick,
+  prerequisiteId,
+  href,
 }) {
   const cardRef = useRef(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
+  const Card = isLocked ? motion.div : MotionLink;
 
   // Glow dinâmico rastreando o mouse
   const handleMouseMove = (e) => {
@@ -29,15 +33,16 @@ export default function ModuleCard({
   };
 
   return (
-    <motion.div
+    <Card
       ref={cardRef}
+      href={isLocked ? undefined : href}
+      aria-label={isLocked ? undefined : `Abrir ${title}`}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => !isLocked && onClick?.()}
       whileHover={isLocked ? undefined : { y: -5, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={`relative w-full min-h-[260px] sm:min-h-[280px] rounded-2xl overflow-hidden ${
+      className={`relative block w-full min-h-[260px] sm:min-h-[280px] rounded-2xl overflow-hidden ${
         isLocked
           ? "bg-nao-locked-bg text-nao-locked-text opacity-80 border border-slate-200 dark:bg-neutral-900/40 dark:border-neutral-800"
           : "bg-nao-card border border-slate-100 shadow-soft hover:shadow-float cursor-pointer dark:bg-neutral-900 dark:border-neutral-700/50"
@@ -79,7 +84,7 @@ export default function ModuleCard({
         <div className="flex justify-between items-start">
           <motion.div
             animate={{ scale: isHovered && !isLocked ? [1, 1.2, 1] : 1 }}
-            transition={{ type: "spring", stiffness: 400, damping: 12 }}
+            transition={{ type: "tween", duration: 0.35, ease: "easeInOut" }}
             className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-black ${
               isLocked
                 ? "bg-slate-200/70 dark:bg-neutral-800/50 text-nao-locked-text"
@@ -125,10 +130,10 @@ export default function ModuleCard({
                   <span className="text-xs font-bold text-slate-500">
                     {progress}% concluído
                   </span>
-                  <button className="flex items-center gap-2 text-xs font-bold text-white bg-nao-secondary hover:bg-orange-600 px-4 py-2.5 rounded-full transition-colors shadow-md">
+                  <span className="flex items-center gap-2 text-xs font-bold text-white bg-nao-secondary px-4 py-2.5 rounded-full shadow-md">
                     <span>Acessar</span>
                     <ArrowRight size={14} />
-                  </button>
+                  </span>
                 </div>
               </motion.div>
             )}
@@ -143,12 +148,12 @@ export default function ModuleCard({
                 <Cloud size={26} />
               </div>
               <span className="text-sm font-medium text-slate-500 bg-white/80 dark:bg-black/50 px-3 py-1 rounded-full">
-                {unlockLevel ? `Desbloqueia no Nível ${unlockLevel}` : "Em breve"}
+                {`Conclua a trilha até o Módulo ${prerequisiteId}`}
               </span>
             </div>
           </div>
         )}
       </div>
-    </motion.div>
+    </Card>
   );
 }

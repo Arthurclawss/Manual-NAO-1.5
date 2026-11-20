@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const motionTags = {
@@ -15,14 +16,20 @@ export default function SplitText({
   tag = "p",
   splitBy = "words",
   delay = 30,
-  duration = 0.8,
-  from = { opacity: 0, y: 18, rotateX: -18, filter: "blur(3px)" },
+  duration = 0.65,
+  from = { opacity: 0, y: 12, filter: "blur(4px)" },
   disabled = false,
 }) {
   const prefersReducedMotion = useReducedMotion();
-  const reduceMotion = disabled || prefersReducedMotion;
+  const reduceMotion = disabled || Boolean(prefersReducedMotion);
+  const [ready, setReady] = useState(false);
   const MotionTag = motionTags[tag] || motion.p;
   const parts = splitBy === "chars" ? Array.from(text) : text.split(" ");
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   const container = {
     hidden: {},
@@ -38,7 +45,6 @@ export default function SplitText({
     visible: {
       opacity: 1,
       y: 0,
-      rotateX: 0,
       filter: "blur(0px)",
       transition: reduceMotion
         ? { duration: 0 }
@@ -51,7 +57,7 @@ export default function SplitText({
       className={`split-text ${className}`}
       variants={container}
       initial="hidden"
-      animate="visible"
+      animate={reduceMotion || ready ? "visible" : "hidden"}
       aria-label={text}
     >
       {parts.map((part, index) => (

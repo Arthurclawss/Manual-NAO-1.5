@@ -14,7 +14,7 @@ export default function BlurText({
   text = "",
   className = "",
   tag = "p",
-  delay = 70,
+  delay = 45,
   animateBy = "words",
   direction = "top",
   threshold = 0.1,
@@ -25,7 +25,7 @@ export default function BlurText({
   const rootRef = useRef(null);
   const [inView, setInView] = useState(false);
   const prefersReducedMotion = useReducedMotion();
-  const reduceMotion = disabled || prefersReducedMotion;
+  const reduceMotion = disabled || Boolean(prefersReducedMotion);
   const MotionTag = motionTags[tag] || motion.p;
   const elements = useMemo(
     () => (animateBy === "characters" ? Array.from(text) : text.split(" ")),
@@ -38,10 +38,11 @@ export default function BlurText({
     const element = rootRef.current;
     if (!element) return;
 
+    let frameId = null;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setInView(true);
+          frameId = requestAnimationFrame(() => setInView(true));
           observer.unobserve(element);
         }
       },
@@ -49,12 +50,15 @@ export default function BlurText({
     );
 
     observer.observe(element);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (frameId !== null) cancelAnimationFrame(frameId);
+    };
   }, [reduceMotion, rootMargin, threshold]);
 
   const initial = reduceMotion
     ? { opacity: 1, filter: "blur(0px)", y: 0 }
-    : { opacity: 0, filter: "blur(10px)", y: direction === "top" ? -18 : 18 };
+    : { opacity: 0, filter: "blur(6px)", y: direction === "top" ? -10 : 10 };
   const isVisible = reduceMotion || inView;
 
   return (
@@ -68,15 +72,14 @@ export default function BlurText({
           key={`${segment}-${index}`}
           className="inline-block will-change-[transform,filter,opacity]"
           initial={initial}
-          animate={isVisible ? {
-            opacity: [0, 0.65, 1],
-            filter: ["blur(10px)", "blur(3px)", "blur(0px)"],
-            y: [direction === "top" ? -18 : 18, direction === "top" ? 3 : -3, 0],
-          } : initial}
+          animate={
+            isVisible
+              ? { opacity: 1, filter: "blur(0px)", y: 0 }
+              : initial
+          }
           transition={{
-            duration: reduceMotion ? 0 : stepDuration * 2.2,
+            duration: reduceMotion ? 0 : stepDuration,
             delay: reduceMotion ? 0 : (index * delay) / 1000,
-            times: [0, 0.55, 1],
             ease: [0.16, 1, 0.3, 1],
           }}
           aria-hidden="true"

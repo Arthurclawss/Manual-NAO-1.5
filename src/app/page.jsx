@@ -4,8 +4,12 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { LogIn, Moon, Sun } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useAppShell } from "@/components/AppShell";
 import BlueprintBackground from "@/components/BlueprintBackground";
+import NaoLogo from "@/components/NaoLogo";
+import SplitText from "@/components/SplitText";
+import BlurText from "@/components/BlurText";
 
 export default function Home() {
   const router = useRouter();
@@ -22,9 +26,7 @@ export default function Home() {
           className="flex items-center gap-3 pointer-events-auto cursor-pointer" 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm overflow-hidden border border-neutral-200">
-            <Image src="/nao.png" alt="NAO" width={40} height={40} className="object-contain scale-[1.3] translate-y-1" />
-          </div>
+          <NaoLogo size="md" />
           <span className="font-bold text-lg text-neutral-900 dark:text-white">
             Manual do NAO
           </span>
@@ -47,8 +49,8 @@ export default function Home() {
       {/* Main Content */}
       <main className="relative z-10 w-full px-4 flex justify-center" id="conteudo-principal">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ y: 20 }}
+          animate={{ y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="relative w-full max-w-[400px] bg-white dark:bg-neutral-900 rounded-[2rem] p-8 pt-16 shadow-2xl shadow-neutral-300/50 dark:shadow-none"
         >
@@ -63,22 +65,28 @@ export default function Home() {
           </div>
 
           <div className="text-center space-y-2 mb-8 mt-2 relative z-0">
-            <h1 className="text-[26px] font-bold text-neutral-900 dark:text-white tracking-tight">
-              Bem-vindo de volta,
-            </h1>
-            <p className="text-neutral-500 dark:text-neutral-400 text-sm px-4">
-              Acesse sua trilha de aprendizado do Robô NAO.
-            </p>
+            <SplitText
+              text="Bem-vindo de volta,"
+              tag="h1"
+              delay={40}
+              className="text-[26px] font-bold text-neutral-900 dark:text-white tracking-tight"
+            />
+            <BlurText
+              text="Acesse sua trilha de aprendizado do Robô NAO."
+              tag="p"
+              delay={45}
+              className="justify-center text-neutral-500 dark:text-neutral-400 text-sm px-4"
+            />
           </div>
 
           <div className="space-y-4">
-            <button
-              onClick={() => router.push("/dashboard")}
+            <Link
+              href="/login"
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-[#2e8a5b] hover:bg-[#25734c] text-white font-medium transition-colors shadow-sm"
             >
               <LogIn size={18} />
               Entrar
-            </button>
+            </Link>
             <button
               onClick={() => router.push("/projeto")}
               className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl border border-[#2e8a5b] text-[#2e8a5b] font-medium hover:bg-[#2e8a5b]/5 transition-colors"

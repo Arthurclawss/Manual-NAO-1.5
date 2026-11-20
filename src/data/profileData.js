@@ -1,10 +1,3 @@
-export const userProfile = {
-  name: "Explorador NAO",
-  role: "Estudante",
-  journey: "Primeiros passos",
-  accountType: "Perfil local",
-};
-
 export const robotParts = [
   { name: "Base", threshold: 8, clipPath: "polygon(10% 84%, 90% 84%, 90% 100%, 10% 100%)" },
   { name: "Pernas", threshold: 20, clipPath: "polygon(16% 54%, 84% 54%, 90% 92%, 10% 92%)" },

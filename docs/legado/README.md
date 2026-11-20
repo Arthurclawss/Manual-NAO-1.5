@@ -2,6 +2,8 @@
 
 Esta pasta guarda temporariamente os arquivos da versão anterior do Manual do NAO.
 
+Os arquivos de conteúdo foram conferidos com o [repositório original no GitHub](https://github.com/luizianesp/Manual-digital-rob-NAO/tree/8ad42418474dc0ae0a8aa564a9bea779ce2cafa6). A versão original desenvolvia a introdução ao NAO; os módulos 2 a 8 indicavam temas em preparação. A trilha atual recupera a introdução, os tópicos de uso diário e as referências a aplicativos e canais.
+
 ## Conteúdo
 
 - `projeto-vite-antigo/`: aplicação original criada com Vite e React.

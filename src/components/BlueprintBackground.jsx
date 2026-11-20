@@ -3,19 +3,17 @@
 import React from "react";
 import { useAppShell } from "@/components/AppShell";
 
-const LINE = "#3b82c4";
-
 /**
  * Linhas de medição (sem números), desenhadas no mesmo sistema de coordenadas
  * da imagem do NAO (1024x1024) para sempre acompanharem o robô.
  */
-function MeasurementLines() {
+function MeasurementLines({ color }) {
   return (
     <svg
       className="absolute inset-0 h-full w-full"
       viewBox="0 0 1024 1024"
       fill="none"
-      stroke={LINE}
+      stroke={color}
       strokeWidth="2"
       strokeLinecap="round"
       aria-hidden="true"
@@ -24,30 +22,30 @@ function MeasurementLines() {
         {/* Altura total */}
         <path d="M232 34 V992" />
         <path d="M212 34 H252 M212 992 H252" />
-        <path d="M232 34 l-9 20 h18 z M232 992 l-9 -20 h18 z" fill={LINE} />
+        <path d="M232 34 l-9 20 h18 z M232 992 l-9 -20 h18 z" fill={color} />
 
         {/* Altura do tronco à base */}
         <path d="M168 200 V992" />
         <path d="M150 200 H186 M150 992 H186" />
-        <path d="M168 200 l-8 18 h16 z M168 992 l-8 -18 h16 z" fill={LINE} />
+        <path d="M168 200 l-8 18 h16 z M168 992 l-8 -18 h16 z" fill={color} />
 
         {/* Largura (ombro a ombro), acima do NAO */}
         <path d="M298 14 H765" />
         <path d="M298 2 V26 M765 2 V26" />
-        <path d="M298 14 l18 -8 v16 z M765 14 l-18 -8 v16 z" fill={LINE} />
+        <path d="M298 14 l18 -8 v16 z M765 14 l-18 -8 v16 z" fill={color} />
       </g>
     </svg>
   );
 }
 
 /** Senoide estilo osciloscópio, num espaço mais vazio do fundo. */
-function SineWave() {
+function SineWave({ color }) {
   return (
     <svg
       className="hidden lg:block absolute left-[38vw] top-[24vh] w-[26vw] max-w-[420px]"
       viewBox="0 0 400 100"
       fill="none"
-      stroke={LINE}
+      stroke={color}
       strokeLinecap="round"
       aria-hidden="true"
     >
@@ -70,36 +68,47 @@ function SineWave() {
 
 export default function BlueprintBackground() {
   const { darkMode } = useAppShell();
-
-  if (darkMode) {
-    return (
-      <div
-        aria-hidden="true"
-        className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-[#030712] bg-grid-pattern-dark transition-colors duration-500"
-      >
-        <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full filter blur-3xl bg-sky-500 opacity-15" />
-        <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full filter blur-3xl bg-orange-500 opacity-10" />
-      </div>
-    );
-  }
+  const lineColor = darkMode ? "#38bdf8" : "#0284c7";
 
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-blueprint-gradient"
+      className={`fixed inset-0 z-[-1] pointer-events-none overflow-hidden transition-colors duration-500 ${
+        darkMode ? "bg-[#030712]" : "bg-blueprint-gradient"
+      }`}
     >
       {/* Grade milimetrada */}
-      <div className="absolute inset-0 bg-blueprint-grid" />
+      <div
+        className={`absolute inset-0 ${
+          darkMode ? "bg-grid-pattern-dark" : "bg-blueprint-grid"
+        }`}
+      />
+
+      {darkMode ? (
+        <>
+          <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full filter blur-3xl bg-sky-500 opacity-15" />
+          <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full filter blur-3xl bg-orange-500 opacity-10" />
+        </>
+      ) : (
+        <>
+          <div className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full filter blur-3xl bg-sky-300 opacity-30" />
+          <div className="absolute -bottom-32 -left-32 w-[26rem] h-[26rem] rounded-full filter blur-3xl bg-orange-200 opacity-35" />
+        </>
+      )}
 
       {/* Senoide */}
-      <SineWave />
+      <SineWave color={lineColor} />
 
       {/* NAO esmaecido à esquerda (só telas grandes) */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/blueprint/nao-blueprint.jpg"
         alt=""
-        className="hidden lg:block absolute left-[-3%] top-[10vh] h-[72vh] w-auto mix-blend-multiply opacity-[0.22] -scale-x-100 select-none"
+        className={`hidden lg:block absolute left-[-3%] top-[10vh] h-[72vh] w-auto -scale-x-100 select-none ${
+          darkMode
+            ? "invert hue-rotate-180 mix-blend-screen opacity-[0.18]"
+            : "mix-blend-multiply contrast-110 opacity-[0.20]"
+        }`}
         draggable={false}
       />
 
@@ -109,16 +118,24 @@ export default function BlueprintBackground() {
         <img
           src="/blueprint/nao-blueprint.jpg"
           alt=""
-          className="h-full w-full mix-blend-multiply opacity-[0.28] sm:opacity-[0.5] select-none"
+          className={`h-full w-full select-none ${
+            darkMode
+              ? "invert hue-rotate-180 mix-blend-screen opacity-[0.22] sm:opacity-[0.38]"
+              : "mix-blend-multiply contrast-110 opacity-[0.26] sm:opacity-[0.44]"
+          }`}
           draggable={false}
         />
         <div className="hidden sm:block">
-          <MeasurementLines />
+          <MeasurementLines color={lineColor} />
         </div>
       </div>
 
       {/* Véu suave para manter o conteúdo legível */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-transparent" />
+      <div
+        className={`absolute inset-0 bg-gradient-to-r via-transparent to-transparent ${
+          darkMode ? "from-[#030712]/50" : "from-white/30"
+        }`}
+      />
     </div>
   );
 }
