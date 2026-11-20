@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Award,
   BookOpen,
   ChevronLeft,
+  House,
   Menu,
   MessageCircle,
   Moon,
@@ -32,19 +33,16 @@ export default function AppSidebar({
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const mobileMenu = useRef(null);
 
   const modules = useModules();
   const currentModule = getCurrentModule(modules);
   const missionLabel = isModuleCompleted(currentModule) ? "Revisar módulo" : "Continuar missão";
   const profileProgress = useMemo(() => calculateProfileProgress(modules), [modules]);
+  const dashboard = { label: "Dashboard", href: "/dashboard", icon: Trophy, active: pathname === "/dashboard" };
 
   const navItems = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: Trophy,
-      active: pathname === "/dashboard",
-    },
+    dashboard,
     {
       label: "Capítulos",
       href: "/capitulos",
@@ -87,15 +85,15 @@ export default function AppSidebar({
           } border-b border-neutral-200/50 dark:border-neutral-700/50 shrink-0`}
         >
           {isSidebarOpen && (
-            <div
-              onClick={() => router.push("/dashboard")}
-              className="flex items-center gap-3 cursor-pointer shrink-0 overflow-hidden"
+            <Link
+              href={dashboard.href}
+              className="flex min-w-0 items-center gap-3 overflow-hidden"
             >
-              <NaoLogo size="md" />
+              <span className="shrink-0"><NaoLogo size="md" /></span>
               <span className="font-extrabold text-xl tracking-tight text-neutral-900 dark:text-white truncate">
                 Manual do NAO
               </span>
-            </div>
+            </Link>
           )}
           <button
             type="button"
@@ -135,12 +133,13 @@ export default function AppSidebar({
 
           <nav className="flex flex-col gap-2 w-full" aria-label="Navegação principal">
             {navItems.map((item) => {
-              const Icon = item.icon;
+              const Icon = item === dashboard ? House : item.icon;
               return (
-                <button
+                <Link
                   key={item.label}
-                  type="button"
-                  onClick={() => router.push(item.href)}
+                  href={item.href}
+                  aria-label={item.label}
+                  aria-current={item.active ? "page" : undefined}
                   className={`flex items-center ${
                     isSidebarOpen ? "gap-3 px-4" : "justify-center px-0"
                   } py-3 rounded-xl font-bold transition-colors w-full ${
@@ -148,11 +147,10 @@ export default function AppSidebar({
                       ? "bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-400"
                       : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   }`}
-                  title={item.label}
                 >
-                  <Icon size={18} />
+                  <Icon size={18} aria-hidden="true" />
                   {isSidebarOpen && <span>{item.label}</span>}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -170,7 +168,7 @@ export default function AppSidebar({
             className={`flex items-center justify-center ${
               isSidebarOpen ? "gap-2 px-4" : "px-0"
             } py-3 rounded-full bg-nao-secondary hover:bg-orange-600 text-white font-bold transition-colors shadow-md w-full`}
-            title={missionLabel}
+            aria-label={missionLabel}
           >
             <Play size={16} fill="currentColor" />
             {isSidebarOpen && <span>{missionLabel}</span>}
@@ -182,7 +180,7 @@ export default function AppSidebar({
             className={`flex items-center justify-center ${
               isSidebarOpen ? "gap-2 px-4" : "px-0"
             } py-3 rounded-xl bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-700 dark:text-neutral-300 font-bold transition-colors w-full`}
-            title="Alternar Tema"
+            aria-label={darkMode ? "Ativar modo claro" : "Ativar modo escuro"}
           >
             {darkMode ? (
               <Sun size={16} className="text-amber-400" />
@@ -195,32 +193,50 @@ export default function AppSidebar({
       </aside>
 
       {/* Mobile Header */}
-      <header className="md:hidden sticky top-0 z-50 backdrop-blur-xl dark:backdrop-blur-none bg-white/80 dark:bg-neutral-900 border-b border-neutral-200/50 dark:border-neutral-700/50 shadow-sm h-16 flex items-center justify-between px-4 shrink-0">
-        <div
-          onClick={() => router.push("/dashboard")}
-          className="flex items-center gap-3 cursor-pointer"
-        >
-          <NaoLogo size="sm" />
-          <span className="font-extrabold text-lg text-neutral-900 dark:text-white">
+      <header className="md:hidden sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b border-neutral-200/50 bg-white/90 px-3 shadow-sm backdrop-blur-xl dark:border-neutral-700/50 dark:bg-neutral-900 dark:backdrop-blur-none">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <span className="shrink-0"><NaoLogo size="sm" /></span>
+          <span className="hidden truncate font-extrabold text-neutral-900 min-[420px]:inline dark:text-white">
             Manual do NAO
           </span>
         </div>
+        <Link
+          href={dashboard.href}
+          aria-current={dashboard.active ? "page" : undefined}
+          className={`inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl px-2.5 text-sm font-bold transition-colors ${dashboard.active ? "bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300" : "text-neutral-800 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-800"}`}
+        >
+          <House size={18} aria-hidden="true" /> {dashboard.label}
+        </Link>
+        <button
+          type="button"
+          popoverTarget="mobile-site-menu"
+          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl bg-neutral-100 px-3 text-sm font-bold text-neutral-800 transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700"
+        >
+          <Menu size={18} aria-hidden="true" /> Menu
+        </button>
 
-        <div className="flex items-center gap-2">
-          {isAdmin && <Link href="/admin" aria-label="Administração" className="rounded-lg bg-neutral-100 p-2 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300"><Shield size={18} aria-hidden="true" /></Link>}
-          <Link href="/forum" aria-label="Fórum" className="rounded-lg bg-neutral-100 p-2 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-            <MessageCircle size={18} aria-hidden="true" />
-          </Link>
-          <Link href={viewerName ? "/perfil" : "/login"} aria-label={viewerName ? "Meu perfil" : "Entrar"} className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
-            <User size={18} aria-hidden="true" />
-          </Link>
-          <button
-            type="button"
-            onClick={toggleDarkMode}
-            aria-label="Alternar tema"
-            className="p-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300"
-          >
-            {darkMode ? <Sun size={18} className="text-amber-400" /> : <Moon size={18} />}
+        <div
+          id="mobile-site-menu"
+          ref={mobileMenu}
+          popover="auto"
+          className="mobile-site-menu fixed inset-auto top-14 right-3 m-0 max-h-[calc(100dvh-4.25rem)] w-64 max-w-[calc(100%-1.5rem)] overflow-y-auto rounded-2xl border border-neutral-200 bg-white p-2 text-neutral-800 shadow-xl md:hidden dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
+        >
+          <nav aria-label="Navegação principal" className="flex flex-col">
+            {[...navItems, { label: viewerName ? "Meu perfil" : "Entrar", href: viewerName ? "/perfil" : "/login", icon: User, active: pathname === "/perfil" }].map(({ label, href, icon: Icon, active }) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                onNavigate={() => mobileMenu.current?.hidePopover()}
+                className={`flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold transition-colors ${active ? "bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300" : "hover:bg-neutral-100 dark:hover:bg-neutral-800"}`}
+              >
+                <Icon size={18} aria-hidden="true" /> {label}
+              </Link>
+            ))}
+          </nav>
+          <button type="button" onClick={toggleDarkMode} className="mt-1 flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm font-bold transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800">
+            {darkMode ? <Sun size={18} aria-hidden="true" /> : <Moon size={18} aria-hidden="true" />}
+            {darkMode ? "Modo claro" : "Modo escuro"}
           </button>
         </div>
       </header>

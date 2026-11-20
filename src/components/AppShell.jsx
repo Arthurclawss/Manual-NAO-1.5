@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { MotionConfig } from "framer-motion";
 import AccessibilityPanel from "@/components/AccessibilityPanel";
@@ -41,8 +41,23 @@ export default function AppShell({ children, viewerName, isAdmin }) {
   const [accessibility, setAccessibilityState] = useState(defaultAccessibility);
   const [rulerY, setRulerY] = useState(null);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const previousPath = useRef(pathname);
 
   const showSidebar = !SIDEBAR_HIDDEN_ROUTES.has(pathname);
+
+  useEffect(() => {
+    if (previousPath.current === pathname) return;
+    previousPath.current = pathname;
+
+    if (accessibility.reduceMotion || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const content = document.querySelector("#conteudo-principal, main");
+    const animation = content?.animate?.(
+      [{ opacity: 0.94 }, { opacity: 1 }],
+      { duration: 180, easing: "ease-out" },
+    );
+    return () => animation?.cancel();
+  }, [pathname, accessibility.reduceMotion]);
 
   // Carrega preferencias salvas no dispositivo apos hidratacao
   useEffect(() => {
@@ -288,7 +303,7 @@ export default function AppShell({ children, viewerName, isAdmin }) {
                 toggleDarkMode={() => setDarkMode((current) => !current)}
               />
               <div
-                className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+                className={`flex-1 flex flex-col min-w-0 motion-safe:transition-[margin] duration-300 ${
                   isSidebarOpen ? "md:ml-64 lg:ml-72" : "md:ml-20"
                 }`}
               >

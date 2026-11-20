@@ -72,10 +72,25 @@ html {
   font-size: 17px;
 }
 
+html.a11y-reduce-motion {
+  scroll-behavior: auto;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-site-menu:popover-open {
+    animation: mobile-menu-in 160ms ease-out;
+  }
+}
+
+@keyframes mobile-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Tema escuro é controlado pela classe .dark (AppShell), não pelo sistema. */
@@ -93,6 +108,7 @@ body {
 @media (max-width: 640px) {
   html {
     font-size: 16px;
+    scroll-padding-top: 4rem;
   }
 }
 

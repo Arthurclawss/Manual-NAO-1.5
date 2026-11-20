@@ -81,9 +81,12 @@ export default function UserAvatar({ size = "lg", editable = false }) {
     PRESET_AVATARS.find((item) => item.id === avatar.id) || PRESET_AVATARS[0];
   const PresetIcon = preset.icon;
 
-  const boxClass =
-    size === "sm" ? "w-10 h-10 rounded-xl" : "w-20 h-20 rounded-2xl";
-  const iconSize = size === "sm" ? 20 : 34;
+  const sizes = {
+    sm: { boxClass: "size-10 rounded-xl", iconSize: 20 },
+    md: { boxClass: "size-14 rounded-2xl", iconSize: 28 },
+    lg: { boxClass: "size-20 rounded-2xl", iconSize: 34 },
+  };
+  const { boxClass, iconSize } = sizes[size] ?? sizes.lg;
 
   async function handleFileChange(event) {
     const file = event.target.files?.[0];
@@ -217,7 +220,7 @@ export default function UserAvatar({ size = "lg", editable = false }) {
             <div
               role="dialog"
               aria-label="Escolher ícone ou foto do perfil"
-              className="absolute left-0 top-full mt-3 z-50 w-72 p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-xl space-y-4"
+              className="absolute left-0 top-full mt-3 z-50 w-72 max-w-[calc(100vw-3.25rem)] p-4 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 shadow-xl space-y-4"
             >
               <div className="flex items-center justify-between">
                 <strong className="text-sm font-extrabold text-neutral-900 dark:text-white">

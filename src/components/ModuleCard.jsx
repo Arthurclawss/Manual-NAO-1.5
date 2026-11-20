@@ -42,7 +42,7 @@ export default function ModuleCard({
       onMouseLeave={() => setIsHovered(false)}
       whileHover={isLocked ? undefined : { y: -5, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-      className={`relative block w-full min-h-[260px] sm:min-h-[280px] rounded-2xl overflow-hidden ${
+      className={`relative block w-full min-h-44 md:min-h-[280px] rounded-2xl overflow-hidden ${
         isLocked
           ? "bg-nao-locked-bg text-nao-locked-text opacity-80 border border-slate-200 dark:bg-neutral-900/40 dark:border-neutral-800"
           : "bg-nao-card border border-slate-100 shadow-soft hover:shadow-float cursor-pointer dark:bg-neutral-900 dark:border-neutral-700/50"
@@ -79,13 +79,13 @@ export default function ModuleCard({
       </div>
 
       {/* Conteúdo */}
-      <div className="relative z-10 p-6 sm:p-8 h-full flex flex-col">
+      <div className="relative z-10 p-4 md:p-8 h-full flex flex-col">
         {/* Ícone / XP com efeito pop no hover */}
         <div className="flex justify-between items-start">
           <motion.div
             animate={{ scale: isHovered && !isLocked ? [1, 1.2, 1] : 1 }}
             transition={{ type: "tween", duration: 0.35, ease: "easeInOut" }}
-            className={`w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-black ${
+            className={`w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center text-2xl font-black ${
               isLocked
                 ? "bg-slate-200/70 dark:bg-neutral-800/50 text-nao-locked-text"
                 : "bg-amber-50 text-amber-500 border border-amber-200 dark:bg-amber-400/10 dark:text-nao-xp dark:border-amber-400/20"
@@ -96,7 +96,7 @@ export default function ModuleCard({
         </div>
 
         {/* Parte inferior */}
-        <motion.div layout className="mt-auto flex flex-col justify-end pt-12">
+        <motion.div layout className="mt-auto flex flex-col justify-end pt-3 md:pt-12">
           <span
             className={`text-[10px] font-extrabold tracking-widest uppercase mb-2 ${
               isLocked ? "text-nao-locked-text" : "text-nao-primary"
@@ -106,12 +106,16 @@ export default function ModuleCard({
           </span>
           <motion.h3
             layout
-            className={`text-2xl font-extrabold tracking-tight leading-tight ${
+            className={`text-lg md:text-2xl font-extrabold tracking-tight leading-tight ${
               isLocked ? "text-slate-500" : "text-nao-title dark:text-white"
             }`}
           >
             {title}
           </motion.h3>
+
+          {!isLocked && (
+            <span className="mt-2 text-xs font-bold text-sky-700 md:hidden dark:text-sky-300">{progress}% concluído · Acessar</span>
+          )}
 
           {/* Estado reveal (hover) */}
           <AnimatePresence>
@@ -121,7 +125,7 @@ export default function ModuleCard({
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3, ease: "easeOut" }}
-                className="overflow-hidden"
+                className="hidden overflow-hidden md:block"
               >
                 <p className="mt-4 text-sm text-nao-body dark:text-neutral-400 leading-relaxed line-clamp-3">
                   {summary}
@@ -143,8 +147,8 @@ export default function ModuleCard({
         {/* Estado bloqueado */}
         {isLocked && (
           <div className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-white/80 dark:bg-neutral-800 shadow-sm flex items-center justify-center text-sky-300">
+            <div className="flex flex-col items-center gap-1 md:gap-3">
+              <div className="w-9 h-9 md:w-14 md:h-14 rounded-full bg-white/80 dark:bg-neutral-800 shadow-sm flex items-center justify-center text-sky-300">
                 <Cloud size={26} />
               </div>
               <span className="text-sm font-medium text-slate-500 bg-white/80 dark:bg-black/50 px-3 py-1 rounded-full">
