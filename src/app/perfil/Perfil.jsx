@@ -171,32 +171,41 @@ export default function Perfil({ name, email, role }) {
               <div className="absolute -top-24 -right-20 w-64 h-64 rounded-full bg-orange-300/20 blur-3xl" />
               <div className="relative grid sm:grid-cols-[0.8fr_1.2fr] gap-6 items-center">
                 <div className="text-center">
-                  <div className="relative mx-auto w-52 h-80 sm:w-60 sm:h-96" aria-label={`Robô ${progress.overallProgress}% completo`}>
-                    <Image
-                      src="/nao-3d-construcao.png"
-                      alt="Estrutura do robô NAO em construção"
-                      fill
-                      sizes="(max-width: 640px) 208px, 240px"
-                      className="object-contain grayscale opacity-35 contrast-95"
-                    />
-                    <div
-                      className="absolute inset-0 transition-[clip-path] duration-1000 ease-out"
-                      style={{ clipPath: `inset(${100 - progress.overallProgress}% 0 0 0)` }}
-                      aria-hidden="true"
-                    >
-                      <Image
-                        src="/nao-3d-construcao.png"
-                        alt=""
-                        fill
-                        sizes="(max-width: 640px) 208px, 240px"
-                        className="object-contain drop-shadow-2xl"
-                      />
-                    </div>
-                    <div
-                      className="absolute inset-x-3 h-px bg-orange-300/80 shadow-[0_0_18px_4px_rgba(251,146,60,0.5)] transition-[bottom] duration-1000 ease-out"
-                      style={{ bottom: `${progress.overallProgress}%` }}
-                    />
-                  </div>
+                  {(() => {
+                    const pct = progress.overallProgress;
+                    // Compensa a margem transparente inferior/superior da imagem dentro do container
+                    const visualLevel =
+                      pct <= 0 ? 0 : pct >= 100 ? 100 : Math.round(12 + (pct / 100) * 76);
+
+                    return (
+                      <div className="relative mx-auto w-52 h-80 sm:w-60 sm:h-96" aria-label={`Robô ${pct}% completo`}>
+                        <Image
+                          src="/nao-3d-construcao.png"
+                          alt="Estrutura do robô NAO em construção"
+                          fill
+                          sizes="(max-width: 640px) 208px, 240px"
+                          className="object-contain grayscale opacity-30 contrast-95"
+                        />
+                        <div
+                          className="absolute inset-0 transition-[clip-path] duration-1000 ease-out"
+                          style={{ clipPath: `inset(${100 - visualLevel}% 0 0 0)` }}
+                          aria-hidden="true"
+                        >
+                          <Image
+                            src="/nao-3d-construcao.png"
+                            alt=""
+                            fill
+                            sizes="(max-width: 640px) 208px, 240px"
+                            className="object-contain drop-shadow-2xl"
+                          />
+                        </div>
+                        <div
+                          className="absolute inset-x-3 h-px bg-orange-300/80 shadow-[0_0_18px_4px_rgba(251,146,60,0.5)] transition-[bottom] duration-1000 ease-out"
+                          style={{ bottom: `${visualLevel}%` }}
+                        />
+                      </div>
+                    );
+                  })()}
                   <strong className="text-3xl font-extrabold">
                     <CountUp to={progress.overallProgress} suffix="%" />
                   </strong>
