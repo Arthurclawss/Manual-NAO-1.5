@@ -130,10 +130,10 @@ export default function Capitulos() {
   }, [modules, searchQuery, statusFilter, isAdmin]);
 
   return (
-    <main id="conteudo-principal" className="min-h-screen relative">
+    <main id="conteudo-principal" className="min-h-screen relative overflow-x-hidden">
       <BlueprintBackground />
 
-      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-10 space-y-5 sm:space-y-8">
         {/* Cabeçalho com resumo da trilha */}
         <motion.section
           initial="hidden"
@@ -218,7 +218,7 @@ export default function Capitulos() {
             />
           </div>
 
-          <div className="inline-flex flex-wrap p-1 rounded-xl bg-white/85 dark:bg-neutral-800/75 border border-neutral-200 dark:border-neutral-700 self-start">
+          <div className="flex overflow-x-auto p-1 rounded-xl bg-white/85 dark:bg-neutral-800/75 border border-neutral-200 dark:border-neutral-700 self-start max-w-full" style={{ scrollbarWidth: "none" }}>
             {[
               { id: "all", label: "Todos" },
               { id: "available", label: "Disponíveis" },
@@ -253,7 +253,7 @@ export default function Capitulos() {
             </p>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6 min-w-0">
             {chapters.map((chapter, ci) => (
               <motion.section
                 key={chapter.number}
@@ -261,7 +261,7 @@ export default function Capitulos() {
                 animate="visible"
                 variants={fadeUp}
                 custom={ci + 1}
-                className={`p-4 sm:p-7 rounded-2xl sm:rounded-3xl space-y-4 sm:space-y-5 ${cardSurface}`}
+                className={`min-w-0 overflow-hidden p-4 sm:p-7 rounded-2xl sm:rounded-3xl space-y-3.5 sm:space-y-5 ${cardSurface}`}
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 pb-3 sm:pb-4 border-b border-neutral-200/70 dark:border-neutral-700/60">
                   <div className="space-y-1">
@@ -325,7 +325,7 @@ export default function Capitulos() {
                   ref={(el) => {
                     chapterCarouselRefs.current[chapter.number] = el;
                   }}
-                  className="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-1 md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-4 md:overflow-visible md:pb-0"
+                  className="flex min-w-0 overflow-x-auto snap-x snap-mandatory gap-3 pb-1 md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-4 md:overflow-visible md:pb-0"
                   style={{ scrollbarWidth: "none" }}
                 >
                   {chapter.modules.map((mod) => {
@@ -340,7 +340,7 @@ export default function Capitulos() {
                         type="button"
                         disabled={isLocked}
                         onClick={() => !isLocked && router.push(href)}
-                        className={`w-[78vw] max-w-[300px] shrink-0 snap-start md:w-auto md:max-w-none text-left p-4 sm:p-5 rounded-2xl border transition-all flex flex-col justify-between gap-4 ${
+                        className={`w-[72vw] min-w-[225px] max-w-[270px] shrink-0 snap-start md:w-auto md:min-w-0 md:max-w-none text-left p-4 sm:p-5 rounded-2xl border transition-all flex flex-col justify-between gap-4 ${
                           isLocked
                             ? "bg-slate-100 dark:bg-neutral-900/50 border-slate-300/85 dark:border-neutral-800 cursor-not-allowed"
                             : "bg-white dark:bg-neutral-900/60 border-slate-300/85 dark:border-neutral-700/70 hover:border-sky-400 dark:hover:border-sky-500 hover:shadow-md cursor-pointer"
