@@ -140,56 +140,57 @@ export default function Capitulos() {
           animate="visible"
           variants={fadeUp}
           custom={0}
-          className={`p-6 sm:p-8 rounded-3xl ${cardSurface}`}
+          className={`p-4 sm:p-8 rounded-2xl sm:rounded-3xl ${cardSurface}`}
         >
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-2xl">
-              <span className="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold tracking-widest uppercase border border-emerald-500/20">
-                <BookOpen size={13} />
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 sm:gap-6">
+            <div className="space-y-1.5 sm:space-y-2 max-w-2xl">
+              <span className="inline-flex items-center gap-1.5 py-0.5 px-2.5 sm:py-1 sm:px-3 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] sm:text-xs font-extrabold tracking-widest uppercase border border-emerald-500/20">
+                <BookOpen size={12} />
                 Trilha de Aprendizado
               </span>
               <SplitText
                 text="Capítulos e Módulos"
                 tag="h1"
                 delay={35}
-                className="text-3xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight"
+                className="text-2xl sm:text-4xl font-extrabold text-neutral-900 dark:text-white tracking-tight"
               />
               <BlurText
                 text="Explore os capítulos organizados por tema, acompanhe seu progresso e avance pelos módulos do robô NAO."
                 tag="p"
                 delay={30}
-                className="text-neutral-600 dark:text-neutral-400"
+                className="hidden sm:flex text-neutral-600 dark:text-neutral-400"
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-4 shrink-0">
-              <div className="flex flex-wrap items-center gap-3 text-xs font-bold">
-                <span className="px-3 py-1.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400">
-                  <CountUp to={progress.overallProgress} suffix="% concluído" />
+            <div className="flex flex-col sm:flex-row lg:flex-col items-stretch sm:items-center lg:items-end gap-2.5 sm:gap-4 shrink-0">
+              <div className="flex items-center gap-1.5 sm:gap-3 text-[11px] sm:text-xs font-bold overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+                <span className="shrink-0 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400">
+                  <CountUp to={progress.overallProgress} suffix="%" />
+                  <span className="hidden sm:inline"> concluído</span>
                 </span>
-                <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <span className="shrink-0 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                   {progress.completedModules}/{progress.totalModules} módulos
                 </span>
-                <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">
-                  <Zap size={13} />
-                  {progress.earnedXp}/{progress.totalXp} XP
+                <span className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                  <Zap size={12} />
+                  {progress.earnedXp}<span className="hidden sm:inline">/{progress.totalXp}</span> XP
                 </span>
               </div>
 
               <button
                 type="button"
                 onClick={() => router.push(currentModuleHref)}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-nao-secondary hover:bg-orange-600 text-white font-extrabold text-sm shadow-md transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-4 py-2 sm:px-5 sm:py-3 rounded-full bg-nao-secondary hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm shadow-md transition-colors"
               >
-                <Play size={15} fill="currentColor" />
+                <Play size={14} fill="currentColor" />
                 Continuar missão
-                <ArrowRight size={15} />
+                <ArrowRight size={14} />
               </button>
             </div>
           </div>
 
-          <div className="mt-6 space-y-1.5">
-            <div className="h-2.5 rounded-full bg-neutral-100 dark:bg-neutral-700 overflow-hidden">
+          <div className="mt-3.5 sm:mt-6">
+            <div className="h-1.5 sm:h-2.5 rounded-full bg-slate-200 dark:bg-neutral-700 overflow-hidden">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-sky-500 to-sky-600 transition-all duration-500"
                 style={{ width: `${progress.overallProgress}%` }}
