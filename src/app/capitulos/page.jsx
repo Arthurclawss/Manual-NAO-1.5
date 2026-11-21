@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   Lock,
   Play,
   Search,
@@ -76,6 +78,14 @@ export default function Capitulos() {
   const modules = useModules();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const chapterCarouselRefs = useRef({});
+
+  const scrollChapter = (chapterKey, direction) => {
+    const el = chapterCarouselRefs.current[chapterKey];
+    if (!el || !el.children[0]) return;
+    const step = el.children[0].offsetWidth + 12;
+    el.scrollBy({ left: direction * step, behavior: "smooth" });
+  };
 
   const progress = useMemo(() => calculateProfileProgress(modules), [modules]);
   const currentModule = useMemo(() => getCurrentModule(modules), [modules]);
@@ -251,22 +261,22 @@ export default function Capitulos() {
                 animate="visible"
                 variants={fadeUp}
                 custom={ci + 1}
-                className={`p-6 sm:p-7 rounded-3xl space-y-5 ${cardSurface}`}
+                className={`p-4 sm:p-7 rounded-2xl sm:rounded-3xl space-y-4 sm:space-y-5 ${cardSurface}`}
               >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-neutral-200/70 dark:border-neutral-700/60">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 pb-3 sm:pb-4 border-b border-neutral-200/70 dark:border-neutral-700/60">
                   <div className="space-y-1">
                     <span className="text-xs font-extrabold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
                       {chapter.number}
                     </span>
-                    <h2 className="text-2xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-neutral-900 dark:text-white tracking-tight">
                       {chapter.title}
                     </h2>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">
                       {chapter.description}
                     </p>
                   </div>
 
-                  <div className="w-full md:w-56 space-y-2 shrink-0">
+                  <div className="w-full md:w-56 space-y-1.5 sm:space-y-2 shrink-0">
                     <div className="flex items-center justify-between text-xs font-bold text-neutral-600 dark:text-neutral-300">
                       <span>
                         {chapter.completedCount}/{chapter.totalCount} concluídos
@@ -275,7 +285,7 @@ export default function Capitulos() {
                         {chapter.totalXp} XP
                       </span>
                     </div>
-                    <div className="h-2 rounded-full bg-neutral-100 dark:bg-neutral-700 overflow-hidden">
+                    <div className="h-2 rounded-full bg-slate-200 dark:bg-neutral-700 overflow-hidden">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-sky-500 transition-all duration-500"
                         style={{ width: `${chapter.chapterProgress}%` }}
@@ -284,7 +294,40 @@ export default function Capitulos() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {/* Controles do carrossel no mobile */}
+                {chapter.modules.length > 1 && (
+                  <div className="flex items-center justify-between md:hidden">
+                    <span className="text-xs font-bold text-slate-600 dark:text-neutral-400">
+                      Deslize os módulos ({chapter.modules.length})
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => scrollChapter(chapter.number, -1)}
+                        aria-label={`Módulo anterior do ${chapter.number}`}
+                        className="grid size-8 place-items-center rounded-lg border border-slate-300/85 bg-white text-neutral-700 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                      >
+                        <ChevronLeft size={16} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => scrollChapter(chapter.number, 1)}
+                        aria-label={`Próximo módulo do ${chapter.number}`}
+                        className="grid size-8 place-items-center rounded-lg border border-slate-300/85 bg-white text-neutral-700 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+                      >
+                        <ChevronRight size={16} />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div
+                  ref={(el) => {
+                    chapterCarouselRefs.current[chapter.number] = el;
+                  }}
+                  className="flex overflow-x-auto snap-x snap-mandatory gap-3 pb-1 md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-4 md:overflow-visible md:pb-0"
+                  style={{ scrollbarWidth: "none" }}
+                >
                   {chapter.modules.map((mod) => {
                     const status = getModuleStatus(modules, mod, isAdmin);
                     const isLocked = status === "locked";
@@ -297,10 +340,10 @@ export default function Capitulos() {
                         type="button"
                         disabled={isLocked}
                         onClick={() => !isLocked && router.push(href)}
-                        className={`text-left p-5 rounded-2xl border transition-all flex flex-col justify-between gap-4 ${
+                        className={`w-[78vw] max-w-[300px] shrink-0 snap-start md:w-auto md:max-w-none text-left p-4 sm:p-5 rounded-2xl border transition-all flex flex-col justify-between gap-4 ${
                           isLocked
-                            ? "bg-neutral-100/70 dark:bg-neutral-900/40 border-neutral-200/60 dark:border-neutral-800 opacity-65 cursor-not-allowed"
-                            : "bg-white dark:bg-neutral-900/60 border-neutral-200 dark:border-neutral-700/70 hover:border-sky-400 dark:hover:border-sky-500 hover:shadow-md cursor-pointer"
+                            ? "bg-slate-100 dark:bg-neutral-900/50 border-slate-300/85 dark:border-neutral-800 cursor-not-allowed"
+                            : "bg-white dark:bg-neutral-900/60 border-slate-300/85 dark:border-neutral-700/70 hover:border-sky-400 dark:hover:border-sky-500 hover:shadow-md cursor-pointer"
                         }`}
                       >
                         <div className="space-y-2.5">
