@@ -34,9 +34,11 @@ export function getAttachmentError(files) {
   let totalBytes = 0;
   for (const file of files) {
     const extension = file.name.split(".").pop()?.toLowerCase();
-    if (!file.name.includes(".") || !fileExtensions.includes(extension)) return `Formato não aceito: ${file.name}.`;
-    if (file.size === 0) return `O arquivo ${file.name} está vazio.`;
-    if (file.size > FILE_BYTES_LIMIT) return `O arquivo ${file.name} ultrapassa 3 MB.`;
+    if (!file.name.includes(".") || !fileExtensions.includes(extension)) {
+      return `Formato não aceito em "${file.name}". Use imagens, PDF, documentos, código, ZIP ou arquivos do Choregraphe.`;
+    }
+    if (file.size === 0) return `O arquivo "${file.name}" está vazio (0 bytes).`;
+    if (file.size > FILE_BYTES_LIMIT) return `O arquivo "${file.name}" ultrapassa o limite de 3 MB.`;
     totalBytes += file.size;
   }
 

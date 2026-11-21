@@ -24,14 +24,25 @@ export async function publishTopic(_state, formData) {
   const body = field(formData, "body");
 
   if (title.length < 5 || title.length > TOPIC_TITLE_LIMIT) return { error: `O título deve ter entre 5 e ${TOPIC_TITLE_LIMIT} caracteres.` };
-  if (!isForumCategory(category)) return { error: "Selecione uma categoria." };
-  if (body.length < 10 || body.length > TOPIC_BODY_LIMIT) return { error: `O texto deve ter entre 10 e ${TOPIC_BODY_LIMIT} caracteres.` };
+  if (!isForumCategory(category)) return { error: "Selecione uma categoria antes de publicar." };
+  if (body.length < 10 || body.length > TOPIC_BODY_LIMIT) return { error: `O texto da publicação deve ter entre 10 e ${TOPIC_BODY_LIMIT} caracteres.` };
 
-  const files = formData.getAll("files").filter((file) => file instanceof File && file.name);
+  const files = formData
+    .getAll("files")
+    .filter(
+      (file) =>
+        file instanceof File &&
+        !(file.size === 0 && (!file.name || file.name === "blob" || file.name === "undefined"))
+    );
   const error = getAttachmentError(files);
   if (error) return { error };
 
-  const id = await createForumTopic({ authorId: user.id, title, category, body, files });
+  let id;
+  try {
+    id = await createForumTopic({ authorId: user.id, title, category, body, files });
+  } catch {
+    return { error: "Não foi possível publicar agora. Verifique sua conexão e tente novamente em instantes." };
+  }
   refreshForum(id);
   redirect(`/forum/${id}`);
 }
@@ -43,7 +54,11 @@ export async function publishReply(id, formData) {
   const body = field(formData, "body");
   if (body.length < 2 || body.length > REPLY_LIMIT) return { error: `A resposta deve ter entre 2 e ${REPLY_LIMIT} caracteres.` };
 
-  if (!(await addForumReply(id, user.id, body))) return { error: "Esta publicação está indisponível para novas respostas." };
+  try {
+    if (!(await addForumReply(id, user.id, body))) return { error: "Esta publicação está indisponível para novas respostas." };
+  } catch {
+    return { error: "Não foi possível enviar sua resposta agora. Tente novamente em instantes." };
+  }
   refreshForum(id);
   return { success: true };
 }

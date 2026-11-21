@@ -9,7 +9,14 @@ import { fieldClass, primaryClass } from "./ForumUi";
 
 function FormError({ message }) {
   if (!message) return null;
-  return <p role="alert" className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-900 dark:bg-red-950 dark:text-red-200">{message}</p>;
+  return (
+    <p
+      role="alert"
+      className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm font-semibold text-red-900 dark:border-red-800/60 dark:bg-red-950 dark:text-red-200"
+    >
+      {message}
+    </p>
+  );
 }
 
 export function TopicForm() {
@@ -26,24 +33,24 @@ export function TopicForm() {
   }
 
   return (
-    <form action={action} className="space-y-5" aria-busy={pending}>
+    <form action={action} noValidate className="space-y-5" aria-busy={pending}>
       <div className="space-y-1.5">
-        <label htmlFor="topic-title" className="block text-sm font-bold">Título</label>
+        <label htmlFor="topic-title" className="block text-sm font-bold text-neutral-800 dark:text-neutral-200">Título <span className="font-normal text-xs text-neutral-500 dark:text-neutral-400">(mín. 5 caracteres)</span></label>
         <input id="topic-title" name="title" value={title} onChange={(event) => setTitle(event.target.value)} className={fieldClass} required minLength={5} maxLength={TOPIC_TITLE_LIMIT} />
       </div>
       <div className="space-y-1.5">
-        <label htmlFor="topic-category" className="block text-sm font-bold">Categoria</label>
+        <label htmlFor="topic-category" className="block text-sm font-bold text-neutral-800 dark:text-neutral-200">Categoria</label>
         <select id="topic-category" name="category" value={category} onChange={(event) => setCategory(event.target.value)} className={fieldClass} required>
           <option value="">Selecione uma categoria</option>
           {Object.entries(FORUM_CATEGORIES).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
         </select>
       </div>
       <div className="space-y-1.5">
-        <label htmlFor="topic-body" className="block text-sm font-bold">Publicação</label>
+        <label htmlFor="topic-body" className="block text-sm font-bold text-neutral-800 dark:text-neutral-200">Publicação <span className="font-normal text-xs text-neutral-500 dark:text-neutral-400">(mín. 10 caracteres)</span></label>
         <textarea id="topic-body" name="body" value={body} onChange={(event) => setBody(event.target.value)} rows={7} minLength={10} maxLength={TOPIC_BODY_LIMIT} required className={fieldClass} />
       </div>
       <div className="space-y-2 rounded-xl border border-dashed border-neutral-300 p-4 dark:border-neutral-600">
-        <label htmlFor="topic-files" className="block text-sm font-bold">Anexos <span className="font-normal text-neutral-600 dark:text-neutral-300">(opcional)</span></label>
+        <label htmlFor="topic-files" className="block text-sm font-bold text-neutral-800 dark:text-neutral-200">Anexos <span className="font-normal text-neutral-600 dark:text-neutral-300">(opcional)</span></label>
         <p id="files-help" className="text-sm text-neutral-700 dark:text-neutral-300">Até 3 arquivos, com 3 MB por arquivo e 4 MB no total. Aceita projetos do Choregraphe, código, documentos, imagens e arquivos compactados.</p>
         <input id="topic-files" name="files" type="file" multiple accept={FILE_ACCEPT} onChange={validateFiles} aria-describedby="files-help" className="w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-sky-100 file:px-3 file:py-2 file:font-bold file:text-sky-900 dark:file:bg-sky-950 dark:file:text-sky-200" />
       </div>
@@ -66,8 +73,8 @@ export function ReplyForm({ topicId, page }) {
   }, null);
 
   return (
-    <form action={action} className="space-y-3" aria-busy={pending}>
-      <label htmlFor="reply-body" className="block text-sm font-bold">Escreva uma resposta</label>
+    <form action={action} noValidate className="space-y-3" aria-busy={pending}>
+      <label htmlFor="reply-body" className="block text-sm font-bold text-neutral-800 dark:text-neutral-200">Escreva uma resposta <span className="font-normal text-xs text-neutral-500 dark:text-neutral-400">(mín. 2 caracteres)</span></label>
       <textarea id="reply-body" name="body" value={body} onChange={(event) => setBody(event.target.value)} minLength={2} maxLength={REPLY_LIMIT} required readOnly={pending} rows={4} className={fieldClass} />
       <FormError message={state?.error} />
       <button type="submit" disabled={pending} className={primaryClass}>{pending ? "Enviando…" : "Responder"}</button>
