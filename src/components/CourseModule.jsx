@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Award, Bot, CheckCircle2, RotateCcw } from "lucide-react";
+import { ArrowRight, Award, Bot, CheckCircle2, FileDown, RotateCcw } from "lucide-react";
 import { getModulePrerequisite, isModuleCompleted, loadModules, saveModules } from "@/data/moduleContent";
 import { lessons } from "@/data/lessons";
 import { moduleQuizzes, QUIZ_PASS_SCORE, scoreQuiz } from "@/data/moduleQuizzes";
 import { LessonActivity, LessonHeader, LessonIndex } from "@/components/LessonStudy";
 import ModuleQuiz from "@/components/ModuleQuiz";
 import { useModules } from "@/components/useModules";
+import { useAppShell } from "@/components/AppShell";
+import { exportModuleToPdf } from "@/lib/modulePdf";
 
 function renderText(body) {
   const blocks = body.split("\n\n").filter(Boolean);
@@ -76,9 +78,10 @@ function renderContentBlock(block, index) {
 
 export default function CourseModule({ id }) {
   const router = useRouter();
+  const { isAdmin } = useAppShell();
   const modules = useModules();
   const courseModule = modules.find((item) => item.id === id);
-  const prerequisite = getModulePrerequisite(modules, id);
+  const prerequisite = isAdmin ? null : getModulePrerequisite(modules, id);
   const nextModule = modules.find((item) => item.id > id);
   const isCompleted = isModuleCompleted(courseModule);
   const study = lessons[id];
@@ -89,7 +92,7 @@ export default function CourseModule({ id }) {
     const score = answers === null ? null : scoreQuiz(quiz, answers);
     if (answers !== null && (score === null || score < QUIZ_PASS_SCORE)) return;
     const latestModules = loadModules();
-    if (getModulePrerequisite(latestModules, id)) return;
+    if (!isAdmin && getModulePrerequisite(latestModules, id)) return;
 
     const updated = latestModules.map((item) =>
       item.id === id ? { ...item, progress: score === null ? 0 : 100, quizScore: score } : item
@@ -152,6 +155,14 @@ export default function CourseModule({ id }) {
                     >
                       <Award size={16} />
                       Conquistas
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => exportModuleToPdf(courseModule, study, quiz)}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:hover:bg-neutral-200 text-white font-bold text-sm transition-colors"
+                    >
+                      <FileDown size={16} />
+                      Baixar conteúdo em PDF
                     </button>
                     <button
                       type="button"

@@ -47,7 +47,7 @@ const carouselVariant = {
 const carouselControl = "grid size-11 shrink-0 place-items-center rounded-xl border border-neutral-200 bg-white text-neutral-700 transition-colors hover:bg-sky-50 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 md:absolute md:top-[calc(50%-1rem)] md:z-20 md:size-12 md:-translate-y-1/2 md:rounded-full md:shadow-xl md:shadow-black/10";
 
 export default function Dashboard({ name, forumTopics }) {
-  const { darkMode, toggleDarkMode } = useAppShell();
+  const { darkMode, toggleDarkMode, isAdmin } = useAppShell();
   const carouselRef = useRef(null);
 
   const scrollCarousel = (direction) => {
@@ -186,7 +186,7 @@ export default function Dashboard({ name, forumTopics }) {
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
               {modules.map((mod) => {
-                const prerequisite = getModulePrerequisite(modules, mod.id);
+                const prerequisite = isAdmin ? null : getModulePrerequisite(modules, mod.id);
                 return (
                   <motion.div 
                     key={mod.id} 

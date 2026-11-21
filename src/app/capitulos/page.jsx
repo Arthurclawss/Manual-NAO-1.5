@@ -14,6 +14,7 @@ import {
   Zap,
 } from "lucide-react";
 import BlueprintBackground from "@/components/BlueprintBackground";
+import { useAppShell } from "@/components/AppShell";
 import SplitText from "@/components/SplitText";
 import BlurText from "@/components/BlurText";
 import CountUp from "@/components/CountUp";
@@ -61,9 +62,9 @@ const fadeUp = {
 const cardSurface =
   "bg-white/95 dark:bg-neutral-800/65 backdrop-blur-md border border-slate-300/85 dark:border-neutral-700/50 shadow-md shadow-slate-900/[0.05]";
 
-function getModuleStatus(modules, mod) {
+function getModuleStatus(modules, mod, isAdmin) {
   if (isModuleCompleted(mod)) return "completed";
-  if (mod.status === "Bloqueado" || getModulePrerequisite(modules, mod.id)) {
+  if (!isAdmin && (mod.status === "Bloqueado" || getModulePrerequisite(modules, mod.id))) {
     return "locked";
   }
   return "available";
@@ -71,6 +72,7 @@ function getModuleStatus(modules, mod) {
 
 export default function Capitulos() {
   const router = useRouter();
+  const { isAdmin } = useAppShell();
   const modules = useModules();
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -96,7 +98,7 @@ export default function Capitulos() {
           : 0;
 
       const filteredModules = groupModules.filter((mod) => {
-        const status = getModuleStatus(modules, mod);
+        const status = getModuleStatus(modules, mod, isAdmin);
         const matchesStatus = statusFilter === "all" || status === statusFilter;
         const matchesQuery =
           !query ||
@@ -115,7 +117,7 @@ export default function Capitulos() {
         modules: filteredModules,
       };
     }).filter((chapter) => chapter.modules.length > 0);
-  }, [modules, searchQuery, statusFilter]);
+  }, [modules, searchQuery, statusFilter, isAdmin]);
 
   return (
     <main id="conteudo-principal" className="min-h-screen relative">
@@ -284,7 +286,7 @@ export default function Capitulos() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                   {chapter.modules.map((mod) => {
-                    const status = getModuleStatus(modules, mod);
+                    const status = getModuleStatus(modules, mod, isAdmin);
                     const isLocked = status === "locked";
                     const isDone = status === "completed";
                     const href = mod.route || `/modulos/${mod.id}`;

@@ -246,6 +246,7 @@ export default function AppShell({ children, viewerName, isAdmin }) {
     darkMode,
     setDarkMode,
     toggleDarkMode: () => setDarkMode((current) => !current),
+    isAdmin: Boolean(isAdmin),
     accessibility,
     accessibilityOpen,
     setAccessibilityOpen,
@@ -258,6 +259,7 @@ export default function AppShell({ children, viewerName, isAdmin }) {
     isSpeaking: activeSpeaking,
   }), [
     darkMode,
+    isAdmin,
     accessibility,
     accessibilityOpen,
     vlibrasOpen,

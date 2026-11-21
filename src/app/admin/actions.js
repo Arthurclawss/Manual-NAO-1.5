@@ -19,5 +19,9 @@ export async function manageEntry(action, id, _state, formData) {
     revalidatePath("/dashboard");
     revalidatePath("/forum", "layout");
   }
-  return { success: action === "revoke-sessions" ? "Sessões encerradas." : "Registro excluído." };
+  const messages = {
+    "revoke-sessions": "Sessões encerradas.",
+    "grant-admin": "Acesso administrativo concedido.",
+  };
+  return { success: messages[action] || "Registro excluído." };
 }

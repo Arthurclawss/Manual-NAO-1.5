@@ -44,11 +44,16 @@ export async function performAdminAction(actorId, action, targetId) {
       result = await transaction.deleteFrom("session").where("userId", "=", targetId)
         .where("userId", "in", transaction.selectFrom("user").select("id").where("role", "!=", "admin"))
         .executeTakeFirst();
+    } else if (action === "grant-admin") {
+      result = await transaction.updateTable("user").set({ role: "admin" })
+        .where("id", "=", targetId).where("role", "!=", "admin")
+        .executeTakeFirst();
     } else {
       return false;
     }
 
-    if (!result.numDeletedRows) return false;
+    const affected = result?.numDeletedRows ?? result?.numUpdatedRows ?? 0n;
+    if (!affected) return false;
     await transaction.insertInto("admin_audit").values({
       id: randomUUID(), actor_id: actorId, action, target_id: targetId, created_at: Date.now(),
     }).execute();

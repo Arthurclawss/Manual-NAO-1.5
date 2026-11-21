@@ -9,7 +9,7 @@ import SplitText from "@/components/SplitText";
 export const metadata = { title: "Administração | Manual do NAO", robots: { index: false, follow: false } };
 
 const sections = { contas: "Contas", publicacoes: "Publicações", historico: "Histórico" };
-const actionLabels = { "delete-topic": "Publicação excluída", "delete-account": "Conta excluída", "revoke-sessions": "Sessões encerradas" };
+const actionLabels = { "delete-topic": "Publicação excluída", "delete-account": "Conta excluída", "revoke-sessions": "Sessões encerradas", "grant-admin": "Administrador concedido" };
 const roleLabels = { student: "Participante", moderator: "Moderador", admin: "Administrador" };
 
 export default async function AdminPage({ searchParams }) {
@@ -88,6 +88,7 @@ function AccountRow({ row }) {
       </div>
       {row.role !== "admin" && (
         <div className="flex flex-wrap items-start gap-2">
+          <AdminAction action="grant-admin" id={row.id} label="Tornar administrador" description="Confirmo que esta conta terá acesso total ao painel administrativo, aos módulos e à moderação." />
           {activeSessions > 0 && <AdminAction action="revoke-sessions" id={row.id} label="Encerrar sessões" description="Confirmo que a pessoa terá de entrar novamente em todos os dispositivos." />}
           <AdminAction action="delete-account" id={row.id} label="Excluir conta" description="Confirmo a exclusão definitiva da conta, das publicações, dos anexos, das respostas e das curtidas associadas. As respostas nos tópicos excluídos também serão removidas." />
         </div>
