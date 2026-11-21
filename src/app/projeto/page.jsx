@@ -155,28 +155,28 @@ export default function Projeto() {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-3">
-                <div className="p-4 rounded-2xl bg-sky-50/90 dark:bg-sky-950/35 border border-sky-200/70 dark:border-sky-800/40 text-center">
-                  <strong className="block text-2xl sm:text-3xl font-black text-sky-600 dark:text-sky-400">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                <div className="flex min-w-0 flex-col items-center justify-center rounded-2xl border border-sky-200/70 bg-sky-50/90 px-2 py-3 text-center sm:p-4 dark:border-sky-800/40 dark:bg-sky-950/35">
+                  <strong className="block whitespace-nowrap text-lg leading-none font-black text-sky-600 sm:text-2xl md:text-3xl dark:text-sky-400">
                     <CountUp to={teamMembers.length} />
                   </strong>
-                  <span className="text-xs font-bold text-neutral-600 dark:text-neutral-300 mt-1 block">
+                  <span className="mt-1.5 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:text-xs dark:text-neutral-300">
                     Integrantes
                   </span>
                 </div>
-                <div className="p-4 rounded-2xl bg-orange-50/90 dark:bg-orange-950/30 border border-orange-200/70 dark:border-orange-800/40 text-center">
-                  <strong className="block text-2xl sm:text-3xl font-black text-orange-500">
+                <div className="flex min-w-0 flex-col items-center justify-center rounded-2xl border border-orange-200/70 bg-orange-50/90 px-2 py-3 text-center sm:p-4 dark:border-orange-800/40 dark:bg-orange-950/30">
+                  <strong className="block whitespace-nowrap text-lg leading-none font-black text-orange-500 sm:text-2xl md:text-3xl">
                     <CountUp to={8} />
                   </strong>
-                  <span className="text-xs font-bold text-neutral-600 dark:text-neutral-300 mt-1 block">
+                  <span className="mt-1.5 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:text-xs dark:text-neutral-300">
                     Módulos
                   </span>
                 </div>
-                <div className="p-4 rounded-2xl bg-emerald-50/90 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-800/40 text-center">
-                  <strong className="block text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">
+                <div className="flex min-w-0 flex-col items-center justify-center rounded-2xl border border-emerald-200/70 bg-emerald-50/90 px-2 py-3 text-center sm:p-4 dark:border-emerald-800/40 dark:bg-emerald-950/30">
+                  <strong className="block whitespace-nowrap text-lg leading-none font-black text-emerald-600 sm:text-2xl md:text-3xl dark:text-emerald-400">
                     <CountUp to={100} suffix="%" />
                   </strong>
-                  <span className="text-xs font-bold text-neutral-600 dark:text-neutral-300 mt-1 block">
+                  <span className="mt-1.5 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:text-xs dark:text-neutral-300">
                     Acessível
                   </span>
                 </div>
