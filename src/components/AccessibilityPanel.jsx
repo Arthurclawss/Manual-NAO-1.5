@@ -8,9 +8,7 @@ import {
   MessageCircle,
   Minus,
   Play,
-  Plus,
   Square,
-  Type,
   Volume2,
   X,
 } from "lucide-react";
@@ -71,6 +69,8 @@ function AccessibilityPanel({
   speakText,
   stopSpeaking,
   isSpeaking,
+  showSidebar = true,
+  pathname = "/",
 }) {
   const [internalOpen, setInternalOpen] = useState(false);
   const [internalVlibrasOpen, setInternalVlibrasOpen] = useState(false);
@@ -161,8 +161,44 @@ function AccessibilityPanel({
     document.body.appendChild(script);
   }
 
+  const hasTopBarOnDesktop = !showSidebar && (pathname === "/" || pathname === "/projeto");
+  const fontPositionClass = showSidebar
+    ? "top-[4.5rem] right-3 md:top-4 md:right-5"
+    : hasTopBarOnDesktop
+      ? "top-20 right-4 sm:right-6"
+      : "top-4 right-4 sm:right-5";
+
   return (
     <>
+      {/* Controle A+ / A- no canto superior direito */}
+      <div
+        className={`fixed ${fontPositionClass} z-[900] inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border border-slate-300/85 dark:border-neutral-700/80 shadow-md px-2 py-1`}
+        role="group"
+        aria-label="Tamanho da fonte"
+      >
+        <button
+          type="button"
+          onClick={() => changeTextScale(preferences.textScale + 1)}
+          disabled={preferences.textScale >= 3}
+          aria-label="Aumentar tamanho da fonte"
+          title="Aumentar fonte (A+)"
+          className="px-2.5 py-1 rounded-full text-sm font-black text-slate-800 dark:text-white hover:bg-sky-50 dark:hover:bg-neutral-800 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-not-allowed"
+        >
+          A+
+        </button>
+        <span className="h-4 w-px bg-slate-300 dark:bg-neutral-700" aria-hidden="true" />
+        <button
+          type="button"
+          onClick={() => changeTextScale(preferences.textScale - 1)}
+          disabled={preferences.textScale <= 0}
+          aria-label="Diminuir tamanho da fonte"
+          title="Diminuir fonte (A-)"
+          className="px-2.5 py-1 rounded-full text-sm font-black text-slate-800 dark:text-white hover:bg-sky-50 dark:hover:bg-neutral-800 disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-not-allowed"
+        >
+          A-
+        </button>
+      </div>
+
       {/* Botões redondos flutuantes no canto inferior direito */}
       <div className="fixed right-4 bottom-4 sm:right-5 sm:bottom-5 z-[900] flex flex-col gap-3">
         <button
@@ -250,41 +286,6 @@ function AccessibilityPanel({
             >
               <X size={20} />
             </button>
-          </div>
-
-          <div className="a11y-control-card">
-            <div className="a11y-control-heading">
-              <span className="a11y-option-icon">
-                <Type size={18} />
-              </span>
-
-              <span>
-                <strong>Texto ampliado</strong>
-                <small>Escala proporcional (100% ate 125%).</small>
-              </span>
-            </div>
-
-            <div className="a11y-stepper" aria-label="Nivel de ampliacao do texto">
-              <button
-                type="button"
-                aria-label="Diminuir texto"
-                onClick={() => changeTextScale(preferences.textScale - 1)}
-              >
-                <Minus size={16} />
-              </button>
-
-              <strong>
-                {preferences.textScale === 0 ? "Padrao" : `Nivel ${preferences.textScale}`}
-              </strong>
-
-              <button
-                type="button"
-                aria-label="Aumentar texto"
-                onClick={() => changeTextScale(preferences.textScale + 1)}
-              >
-                <Plus size={16} />
-              </button>
-            </div>
           </div>
 
           <div className="accessibility-options">

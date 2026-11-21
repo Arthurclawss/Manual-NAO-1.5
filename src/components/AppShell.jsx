@@ -324,6 +324,8 @@ export default function AppShell({ children, viewerName, isAdmin }) {
             speakText={speakText}
             stopSpeaking={stopSpeaking}
             isSpeaking={activeSpeaking}
+            showSidebar={showSidebar}
+            pathname={pathname}
           />
         </div>
       </MotionConfig>
