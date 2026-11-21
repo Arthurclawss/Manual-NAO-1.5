@@ -301,6 +301,13 @@ export default function AppShell({ children, viewerName, isAdmin }) {
                 setIsSidebarOpen={setIsSidebarOpen}
                 darkMode={darkMode}
                 toggleDarkMode={() => setDarkMode((current) => !current)}
+                textScale={accessibility.textScale}
+                onChangeTextScale={(next) =>
+                  setAccessibility((current) => ({
+                    ...current,
+                    textScale: Math.min(3, Math.max(0, next)),
+                  }))
+                }
               />
               <div
                 className={`flex-1 flex flex-col min-w-0 motion-safe:transition-[margin] duration-300 ${

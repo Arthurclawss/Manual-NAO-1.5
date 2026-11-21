@@ -30,6 +30,8 @@ export default function AppSidebar({
   setIsSidebarOpen,
   darkMode,
   toggleDarkMode,
+  textScale = 0,
+  onChangeTextScale,
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -200,6 +202,33 @@ export default function AppSidebar({
             Manual do NAO
           </span>
         </div>
+        {onChangeTextScale && (
+          <div
+            className="inline-flex shrink-0 items-center rounded-xl border border-slate-200 bg-neutral-100/90 p-0.5 dark:border-neutral-700 dark:bg-neutral-800"
+            role="group"
+            aria-label="Tamanho da fonte"
+          >
+            <button
+              type="button"
+              onClick={() => onChangeTextScale(textScale + 1)}
+              disabled={textScale >= 3}
+              aria-label="Aumentar tamanho da fonte"
+              className="px-2 py-1.5 rounded-lg text-xs font-black text-neutral-800 dark:text-white hover:bg-white dark:hover:bg-neutral-700 disabled:opacity-40"
+            >
+              A+
+            </button>
+            <span className="h-3.5 w-px bg-slate-300 dark:bg-neutral-600" aria-hidden="true" />
+            <button
+              type="button"
+              onClick={() => onChangeTextScale(textScale - 1)}
+              disabled={textScale <= 0}
+              aria-label="Diminuir tamanho da fonte"
+              className="px-2 py-1.5 rounded-lg text-xs font-black text-neutral-800 dark:text-white hover:bg-white dark:hover:bg-neutral-700 disabled:opacity-40"
+            >
+              A-
+            </button>
+          </div>
+        )}
         <Link
           href={dashboard.href}
           aria-current={dashboard.active ? "page" : undefined}

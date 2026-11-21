@@ -163,16 +163,16 @@ function AccessibilityPanel({
 
   const hasTopBarOnDesktop = !showSidebar && (pathname === "/" || pathname === "/projeto");
   const fontPositionClass = showSidebar
-    ? "top-[4.5rem] right-3 md:top-4 md:right-5"
+    ? "hidden md:inline-flex top-4 right-5"
     : hasTopBarOnDesktop
-      ? "top-20 right-4 sm:right-6"
-      : "top-4 right-4 sm:right-5";
+      ? "inline-flex top-20 right-4 sm:right-6"
+      : "inline-flex top-4 right-4 sm:right-5";
 
   return (
     <>
       {/* Controle A+ / A- no canto superior direito */}
       <div
-        className={`fixed ${fontPositionClass} z-[900] inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border border-slate-300/85 dark:border-neutral-700/80 shadow-md px-2 py-1`}
+        className={`fixed ${fontPositionClass} z-[900] items-center gap-1 rounded-full bg-white/95 dark:bg-neutral-900/95 backdrop-blur-md border border-slate-300/85 dark:border-neutral-700/80 shadow-md px-2 py-1`}
         role="group"
         aria-label="Tamanho da fonte"
       >
