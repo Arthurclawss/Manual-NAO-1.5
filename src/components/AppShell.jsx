@@ -193,7 +193,9 @@ export default function AppShell({ children, viewerName, isAdmin }) {
       return;
     }
 
-    const mediaItems = document.querySelectorAll("main img[alt], main iframe[title]");
+    const mediaItems = document.querySelectorAll(
+      'main img[alt]:not([data-no-caption="true"]), main iframe[title]'
+    );
     mediaItems.forEach((el) => {
       const text = el.getAttribute("alt") || el.getAttribute("title") || "";
       if (!text.trim()) return;

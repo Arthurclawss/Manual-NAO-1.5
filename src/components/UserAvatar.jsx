@@ -193,6 +193,7 @@ export default function UserAvatar({ size = "lg", editable = false }) {
           <img
             src={avatar.dataUrl}
             alt="Foto do usuário"
+            data-no-caption="true"
             className="w-full h-full object-cover"
           />
         ) : (
