@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { LogIn, Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,7 @@ import HomeShowcaseCarousel from "@/components/HomeShowcaseCarousel";
 export default function Home() {
   const router = useRouter();
   const { darkMode, toggleDarkMode } = useAppShell();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <div className="min-h-screen relative flex items-center justify-center overflow-x-hidden">
@@ -62,27 +63,37 @@ export default function Home() {
       >
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] items-center gap-8 lg:gap-12">
           {/* Esquerda: Carrossel explicativo */}
-          <div className="order-2 lg:order-1">
+          <motion.div
+            initial={prefersReducedMotion ? false : { opacity: 0, x: -28, y: 12, scale: 0.98 }}
+            animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="order-2 lg:order-1"
+          >
             <HomeShowcaseCarousel />
-          </div>
+          </motion.div>
 
           {/* Direita: Card de entrada/login */}
           <div className="order-1 lg:order-2 flex justify-center lg:justify-end pt-10 lg:pt-0">
             <motion.div
-              initial={{ y: 20 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              initial={prefersReducedMotion ? false : { opacity: 0, x: 28, y: 16, scale: 0.97 }}
+              animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+              transition={{ duration: 0.75, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
               className="relative w-full max-w-[400px] bg-white dark:bg-neutral-900 border border-slate-300/85 dark:border-neutral-700/60 rounded-[2rem] p-8 pt-16 shadow-2xl shadow-slate-900/10 dark:shadow-none"
             >
               {/* NAO Head popping out */}
-              <div className="absolute -top-[70px] left-1/2 -translate-x-1/2 w-[140px] h-[140px] z-10 rounded-full border-[6px] border-white dark:border-neutral-900 shadow-xl overflow-hidden bg-white dark:bg-neutral-800">
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.82, y: 14 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.24 }}
+                className="absolute -top-[70px] left-1/2 -translate-x-1/2 w-[140px] h-[140px] z-10 rounded-full border-[6px] border-white dark:border-neutral-900 shadow-xl overflow-hidden bg-white dark:bg-neutral-800"
+              >
                 <Image
                   src="/nao-head-gray.jpg"
                   alt="NAO Head"
                   fill
                   className="object-cover object-center scale-[1.15]"
                 />
-              </div>
+              </motion.div>
 
               <div className="text-center space-y-2 mb-8 mt-2 relative z-0">
                 <SplitText

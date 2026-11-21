@@ -243,10 +243,10 @@ export default function HomeShowcaseCarousel() {
         <AnimatePresence mode="wait">
           <motion.div
             key={current.id}
-            initial={prefersReducedMotion ? false : { opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={prefersReducedMotion ? undefined : { opacity: 0, x: -16 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            initial={prefersReducedMotion ? false : { opacity: 0, x: 24, filter: "blur(4px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            exit={prefersReducedMotion ? undefined : { opacity: 0, x: -24, filter: "blur(4px)" }}
+            transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
             className="space-y-5"
           >
             <div className="space-y-2">
