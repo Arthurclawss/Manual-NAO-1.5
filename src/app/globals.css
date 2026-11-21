@@ -42,10 +42,10 @@ textarea,
   --color-nao-body: #475569;
   --color-nao-xp: #fbbf24;
   --color-nao-success: #10b981;
-  --color-nao-locked-bg: #f1f5f9;
-  --color-nao-locked-text: #94a3b8;
-  --shadow-soft: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
-  --shadow-float: 0 20px 25px -5px rgba(15, 23, 42, 0.1);
+  --color-nao-locked-bg: #edf2f7;
+  --color-nao-locked-text: #64748b;
+  --shadow-soft: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 2px 8px -2px rgba(15, 23, 42, 0.05);
+  --shadow-float: 0 20px 25px -5px rgba(15, 23, 42, 0.14);
   --font-sans: var(--font-nunito), "Segoe UI", Arial, Helvetica, sans-serif;
   --font-mono: "Cascadia Code", "Courier New", monospace;
 }
@@ -145,14 +145,14 @@ body {
 
 /* Fundo "blueprint do NAO": degradê azul-gelo + grade milimetrada */
 .bg-blueprint-gradient {
-  background: linear-gradient(135deg, #f8fbfe 0%, #eef6fc 48%, #dff0fa 100%);
+  background: linear-gradient(135deg, #e2edf7 0%, #d4e6f5 48%, #c2dcf0 100%);
 }
 .bg-blueprint-grid {
   background-image:
-    linear-gradient(rgba(2, 132, 199, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(2, 132, 199, 0.055) 1px, transparent 1px),
-    linear-gradient(rgba(2, 132, 199, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(2, 132, 199, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(2, 132, 199, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(2, 132, 199, 0.08) 1px, transparent 1px),
+    linear-gradient(rgba(2, 132, 199, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(2, 132, 199, 0.14) 1px, transparent 1px);
   background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
   -webkit-mask-image: linear-gradient(to left, #000 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.3) 100%);
   mask-image: linear-gradient(to left, #000 0%, rgba(0, 0, 0, 0.6) 55%, rgba(0, 0, 0, 0.3) 100%);

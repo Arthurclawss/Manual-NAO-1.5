@@ -4,7 +4,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, Heart, MessageSquare, Paperclip }
 import BlueprintBackground from "@/components/BlueprintBackground";
 import PageEntrance from "@/components/PageEntrance";
 
-export const panelClass = "rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900";
+export const panelClass = "rounded-2xl border border-slate-300/85 bg-white shadow-md shadow-slate-900/[0.05] dark:border-neutral-700 dark:bg-neutral-900";
 export const fieldClass = "w-full rounded-xl border border-neutral-300 bg-white px-3 py-2.5 text-neutral-900 dark:border-neutral-600 dark:bg-neutral-800 dark:text-white";
 export const primaryClass = "inline-flex items-center justify-center gap-2 rounded-xl bg-sky-700 px-4 py-2.5 text-sm font-bold text-white hover:bg-sky-800 disabled:opacity-60 dark:bg-sky-400 dark:text-slate-950 dark:hover:bg-sky-300";
 export const secondaryClass = "inline-flex items-center justify-center gap-2 rounded-xl border border-neutral-300 px-3 py-2 text-sm font-bold text-neutral-800 hover:bg-neutral-100 disabled:opacity-60 dark:border-neutral-600 dark:text-neutral-100 dark:hover:bg-neutral-800";

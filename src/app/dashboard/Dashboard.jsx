@@ -81,16 +81,16 @@ export default function Dashboard({ name, forumTopics }) {
           <section className="mb-8 hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4" aria-label="Resumo de progresso">
             {desktopStats.map(({ icon: Icon, label, value, hint }) => (
               <motion.div key={label} variants={headerVariant}>
-                <BorderGlowCard className="h-full rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-700/50 dark:bg-neutral-800/60">
+                <BorderGlowCard className="h-full rounded-2xl border border-slate-300/85 bg-white p-4 shadow-md shadow-slate-900/[0.05] dark:border-neutral-700/50 dark:bg-neutral-800/60">
                   <div className="flex items-center gap-2">
-                    <Icon size={16} className="shrink-0 text-sky-500 dark:text-sky-400" aria-hidden="true" />
-                    <span className="text-xs font-bold text-neutral-500 dark:text-neutral-400">{label}</span>
+                    <Icon size={16} className="shrink-0 text-sky-600 dark:text-sky-400" aria-hidden="true" />
+                    <span className="text-xs font-bold text-slate-600 dark:text-neutral-400">{label}</span>
                   </div>
                   <strong className="mt-1.5 block text-xl font-black text-neutral-900 dark:text-white">{value}</strong>
                   {hint ? (
-                    <small className="mt-1.5 block text-[11px] font-medium text-neutral-400 dark:text-neutral-500">{hint}</small>
+                    <small className="mt-1.5 block text-[11px] font-medium text-slate-600 dark:text-neutral-400">{hint}</small>
                   ) : (
-                    <div aria-hidden="true" className="mt-2 h-1.5 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-700">
+                    <div aria-hidden="true" className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-neutral-700">
                       <div className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-400" style={{ width: `${profileProgress.overallProgress}%` }} />
                     </div>
                   )}
@@ -116,11 +116,11 @@ export default function Dashboard({ name, forumTopics }) {
                   text="Seu robô NAO aguarda. Avance pelos módulos, desvende os mistérios da robótica e acumule XP para subir de nível."
                   tag="p"
                   delay={30}
-                  className="hidden md:block mt-3 text-base text-neutral-500 dark:text-neutral-400 leading-relaxed font-medium"
+                  className="hidden md:block mt-3 text-base text-slate-700 dark:text-neutral-400 leading-relaxed font-semibold"
                 />
               </div>
               <div className="flex items-center gap-2">
-                <div className="hidden md:block px-3 py-1.5 rounded-lg bg-sky-50 dark:bg-sky-500/10 text-sky-600 dark:text-sky-300 text-xs font-bold">
+                <div className="hidden md:block px-3 py-1.5 rounded-lg bg-white/95 border border-sky-200 shadow-sm dark:border-sky-500/20 dark:bg-sky-500/10 text-sky-700 dark:text-sky-300 text-xs font-bold">
                   {profileProgress.completedModules} de {profileProgress.totalModules} concluídos
                 </div>
                 <Link
@@ -139,22 +139,22 @@ export default function Dashboard({ name, forumTopics }) {
             <motion.section
               variants={headerVariant}
               aria-label="Resumo de progresso"
-              className="mb-4 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm md:hidden dark:border-neutral-700/70 dark:bg-neutral-900/90"
+              className="mb-4 overflow-hidden rounded-2xl border border-slate-300/85 bg-white shadow-md shadow-slate-900/[0.05] md:hidden dark:border-neutral-700/70 dark:bg-neutral-900/90"
             >
-              <div className="border-b border-neutral-200 px-3 py-2.5 sm:px-4 dark:border-neutral-700/70">
+              <div className="border-b border-slate-200 px-3 py-2.5 sm:px-4 dark:border-neutral-700/70">
                 <div className="flex items-center justify-between gap-2">
-                  <h2 className="flex items-center gap-1.5 text-xs font-bold text-neutral-600 dark:text-neutral-300">
+                  <h2 className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-neutral-300">
                     <Trophy size={15} className="shrink-0 text-sky-600 dark:text-sky-400" aria-hidden="true" /> Progresso
                   </h2>
                   <strong className="text-sm font-black text-neutral-900 tabular-nums dark:text-white">
                     <CountUp to={profileProgress.overallProgress} suffix="%" />
                   </strong>
                 </div>
-                <div aria-hidden="true" className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-700">
+                <div aria-hidden="true" className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-neutral-700">
                   <div className="h-full rounded-full bg-gradient-to-r from-sky-500 to-sky-400 motion-safe:transition-[width] duration-300" style={{ width: `${profileProgress.overallProgress}%` }} />
                 </div>
               </div>
-              <dl className="grid grid-cols-3 divide-x divide-neutral-200 py-2 dark:divide-neutral-700/70">
+              <dl className="grid grid-cols-3 divide-x divide-slate-200 py-2 dark:divide-neutral-700/70">
                 {stats.map(({ icon: Icon, label, value }) => (
                   <div key={label} className="min-w-0 px-1.5 text-center sm:px-3">
                     <dt className="flex flex-wrap items-center justify-center gap-x-1 text-xs leading-tight font-bold text-neutral-600 dark:text-neutral-300">
@@ -217,7 +217,7 @@ export default function Dashboard({ name, forumTopics }) {
           </motion.section>
 
           <motion.aside variants={headerVariant} className="grid lg:grid-cols-3 gap-4" aria-label="Recursos complementares">
-            <div id="forum" className="p-5 rounded-2xl bg-white dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/50 shadow-sm">
+            <div id="forum" className="p-5 rounded-2xl bg-white dark:bg-neutral-800/60 border border-slate-300/85 dark:border-neutral-700/50 shadow-md shadow-slate-900/[0.05]">
               <div className="flex items-center gap-2 mb-4">
                 <MessageCircle size={18} className="text-sky-500" />
                 <h2 className="font-bold text-neutral-900 dark:text-white">Fórum</h2>
@@ -235,30 +235,30 @@ export default function Dashboard({ name, forumTopics }) {
               </div>
             </div>
 
-            <div className="p-5 rounded-2xl bg-white dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/50 shadow-sm">
+            <div className="p-5 rounded-2xl bg-white dark:bg-neutral-800/60 border border-slate-300/85 dark:border-neutral-700/50 shadow-md shadow-slate-900/[0.05]">
               <div className="flex items-center gap-2 mb-4">
-                <CheckCircle2 size={18} className="text-sky-500" />
+                <CheckCircle2 size={18} className="text-sky-600 dark:text-sky-400" />
                 <h2 className="font-bold text-neutral-900 dark:text-white">Próximas conquistas</h2>
               </div>
               <ul className="space-y-3">
                 {["Primeiro acesso ao manual", "Concluir o módulo 1", "Publicar uma dúvida no fórum"].map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
+                  <li key={item} className="flex items-center gap-2 text-sm text-slate-700 dark:text-neutral-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="p-5 rounded-2xl bg-white dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/50 shadow-sm">
+            <div className="p-5 rounded-2xl bg-white dark:bg-neutral-800/60 border border-slate-300/85 dark:border-neutral-700/50 shadow-md shadow-slate-900/[0.05]">
               <div className="flex items-center gap-2 mb-4">
-                <Settings size={18} className="text-neutral-500" />
+                <Settings size={18} className="text-slate-600 dark:text-neutral-400" />
                 <h2 className="font-bold text-neutral-900 dark:text-white">Preferências</h2>
               </div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">Ajuste a aparência da sua área de estudos.</p>
+              <p className="text-sm text-slate-600 dark:text-neutral-400 mb-4">Ajuste a aparência da sua área de estudos.</p>
               <button
                 onClick={toggleDarkMode}
-                className="w-full py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-600 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-700/50 transition-colors"
+                className="w-full py-2.5 rounded-xl border border-slate-300 dark:border-neutral-600 text-sm font-semibold text-slate-700 dark:text-neutral-300 hover:bg-slate-50 dark:hover:bg-neutral-700/50 transition-colors"
               >
                 {darkMode ? "Usar modo claro" : "Usar modo escuro"}
               </button>

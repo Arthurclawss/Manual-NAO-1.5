@@ -133,7 +133,7 @@ export default function BlueprintBackground() {
       {/* Véu suave para manter o conteúdo legível */}
       <div
         className={`absolute inset-0 bg-gradient-to-r via-transparent to-transparent ${
-          darkMode ? "from-[#030712]/50" : "from-white/30"
+          darkMode ? "from-[#030712]/50" : "from-white/10"
         }`}
       />
     </div>

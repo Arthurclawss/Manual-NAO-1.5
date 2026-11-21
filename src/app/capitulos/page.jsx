@@ -59,7 +59,7 @@ const fadeUp = {
 };
 
 const cardSurface =
-  "bg-white/90 dark:bg-neutral-800/65 backdrop-blur-md border border-neutral-200/80 dark:border-neutral-700/50 shadow-sm";
+  "bg-white/95 dark:bg-neutral-800/65 backdrop-blur-md border border-slate-300/85 dark:border-neutral-700/50 shadow-md shadow-slate-900/[0.05]";
 
 function getModuleStatus(modules, mod) {
   if (isModuleCompleted(mod)) return "completed";

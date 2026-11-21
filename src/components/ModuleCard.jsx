@@ -44,8 +44,8 @@ export default function ModuleCard({
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className={`relative block w-full min-h-44 md:min-h-[280px] rounded-2xl overflow-hidden ${
         isLocked
-          ? "bg-nao-locked-bg text-nao-locked-text opacity-80 border border-slate-200 dark:bg-neutral-900/40 dark:border-neutral-800"
-          : "bg-nao-card border border-slate-100 shadow-soft hover:shadow-float cursor-pointer dark:bg-neutral-900 dark:border-neutral-700/50"
+          ? "bg-slate-100 text-slate-600 border border-slate-300/90 shadow-sm dark:bg-neutral-900/75 dark:text-neutral-400 dark:border-neutral-700/70"
+          : "bg-nao-card border border-slate-300/85 shadow-soft hover:shadow-float cursor-pointer dark:bg-neutral-900 dark:border-neutral-700/60"
       }`}
     >
       {/* Glow suave que segue o mouse */}
@@ -87,8 +87,8 @@ export default function ModuleCard({
             transition={{ type: "tween", duration: 0.35, ease: "easeInOut" }}
             className={`w-11 h-11 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center text-2xl font-black ${
               isLocked
-                ? "bg-slate-200/70 dark:bg-neutral-800/50 text-nao-locked-text"
-                : "bg-amber-50 text-amber-500 border border-amber-200 dark:bg-amber-400/10 dark:text-nao-xp dark:border-amber-400/20"
+                ? "bg-slate-200/90 dark:bg-neutral-800/70 text-slate-600 dark:text-neutral-400"
+                : "bg-amber-50 text-amber-600 border border-amber-300/80 dark:bg-amber-400/10 dark:text-nao-xp dark:border-amber-400/20"
             }`}
           >
             {icon || <Sparkles size={24} />}
@@ -99,7 +99,7 @@ export default function ModuleCard({
         <motion.div layout className="mt-auto flex flex-col justify-end pt-3 md:pt-12">
           <span
             className={`text-[10px] font-extrabold tracking-widest uppercase mb-2 ${
-              isLocked ? "text-nao-locked-text" : "text-nao-primary"
+              isLocked ? "text-slate-600 dark:text-neutral-400" : "text-sky-600 dark:text-nao-primary"
             }`}
           >
             Módulo {id}
@@ -107,7 +107,7 @@ export default function ModuleCard({
           <motion.h3
             layout
             className={`text-lg md:text-2xl font-extrabold tracking-tight leading-tight ${
-              isLocked ? "text-slate-500" : "text-nao-title dark:text-white"
+              isLocked ? "text-slate-700 dark:text-neutral-300" : "text-nao-title dark:text-white"
             }`}
           >
             {title}
