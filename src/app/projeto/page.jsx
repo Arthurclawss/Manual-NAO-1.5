@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
@@ -7,6 +8,8 @@ import {
   ArrowRight,
   Bot,
   Building2,
+  ChevronLeft,
+  ChevronRight,
   FlaskConical,
   Heart,
   Mail,
@@ -69,6 +72,97 @@ const projectContexts = [
 
 const cardSurface =
   "bg-white/95 dark:bg-neutral-800/65 backdrop-blur-md border border-slate-300/85 dark:border-neutral-700/50 shadow-md shadow-slate-900/[0.05]";
+
+function MobileCarousel({ items, renderItem, label, breakpoint = "sm" }) {
+  const trackRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const hiddenClass = breakpoint === "md" ? "md:hidden" : "sm:hidden";
+
+  const scrollToIndex = (index) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const clamped = Math.max(0, Math.min(items.length - 1, index));
+    const child = track.children[clamped];
+    if (child) {
+      child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+    setActiveIndex(clamped);
+  };
+
+  const handleScroll = () => {
+    const track = trackRef.current;
+    if (!track || track.children.length === 0) return;
+    const scrollLeft = track.scrollLeft;
+    let closest = 0;
+    let minDist = Infinity;
+    Array.from(track.children).forEach((child, idx) => {
+      const dist = Math.abs(child.offsetLeft - scrollLeft);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = idx;
+      }
+    });
+    if (closest !== activeIndex) setActiveIndex(closest);
+  };
+
+  return (
+    <div className={`${hiddenClass} space-y-3`}>
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label={label}
+        className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {items.map((item, i) => (
+          <div key={item.title || item.name} className="w-[85%] shrink-0 snap-center">
+            {renderItem(item, i)}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex items-center justify-between px-1">
+        <div className="flex items-center gap-1.5">
+          {items.map((item, i) => (
+            <button
+              key={item.title || item.name}
+              type="button"
+              onClick={() => scrollToIndex(i)}
+              aria-label={`Ir para slide ${i + 1}`}
+              aria-current={activeIndex === i ? "true" : undefined}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                activeIndex === i
+                  ? "w-6 bg-sky-500"
+                  : "w-2 bg-neutral-300 dark:bg-neutral-700"
+              }`}
+            />
+          ))}
+        </div>
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => scrollToIndex(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            aria-label="Slide anterior"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToIndex(activeIndex + 1)}
+            disabled={activeIndex === items.length - 1}
+            aria-label="Próximo slide"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition disabled:opacity-40 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Projeto() {
   const router = useRouter();
@@ -185,11 +279,11 @@ export default function Projeto() {
           </motion.section>
 
           {/* Context Cards */}
-          <section aria-label="Pilares do projeto" className="grid md:grid-cols-3 gap-4">
-            {projectContexts.map((item, i) => {
+          {(() => {
+            const renderContextCard = (item, i) => {
               const Icon = item.icon;
               return (
-                <motion.div key={item.title} variants={slideUp} custom={i + 2}>
+                <motion.div key={item.title} variants={slideUp} custom={i + 2} className="h-full">
                   <BorderGlowCard className={`p-6 rounded-2xl h-full ${cardSurface}`}>
                     <div
                       className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-md mb-4`}
@@ -219,8 +313,22 @@ export default function Projeto() {
                   </BorderGlowCard>
                 </motion.div>
               );
-            })}
-          </section>
+            };
+
+            return (
+              <section aria-label="Pilares do projeto">
+                <MobileCarousel
+                  items={projectContexts}
+                  renderItem={renderContextCard}
+                  label="Pilares do projeto"
+                  breakpoint="md"
+                />
+                <div className="hidden md:grid md:grid-cols-3 gap-4">
+                  {projectContexts.map(renderContextCard)}
+                </div>
+              </section>
+            );
+          })()}
 
           {/* Team */}
           <motion.section variants={slideUp} custom={5} aria-labelledby="team-title" className="space-y-6">
@@ -238,9 +346,9 @@ export default function Projeto() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {teamMembers.map((member, i) => (
-                <motion.div key={member.name} variants={slideUp} custom={i * 0.4 + 6}>
+            {(() => {
+              const renderMemberCard = (member, i) => (
+                <motion.div key={member.name} variants={slideUp} custom={i * 0.4 + 6} className="h-full">
                   <SpotlightCard className={`p-5 rounded-2xl h-full ${cardSurface} hover:-translate-y-1 transition-transform duration-300`}>
                     <div className="flex items-center justify-between mb-4">
                       <div
@@ -260,8 +368,22 @@ export default function Projeto() {
                     </p>
                   </SpotlightCard>
                 </motion.div>
-              ))}
-            </div>
+              );
+
+              return (
+                <>
+                  <MobileCarousel
+                    items={teamMembers}
+                    renderItem={renderMemberCard}
+                    label="Equipe do projeto"
+                    breakpoint="sm"
+                  />
+                  <div className="hidden sm:grid sm:grid-cols-3 gap-4">
+                    {teamMembers.map(renderMemberCard)}
+                  </div>
+                </>
+              );
+            })()}
           </motion.section>
 
           {/* Motivation + CTA */}
