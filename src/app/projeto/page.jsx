@@ -210,8 +210,8 @@ export default function Projeto() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12" id="conteudo-principal">
-        <motion.div initial="hidden" animate="visible" className="space-y-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-12" id="conteudo-principal">
+        <motion.div initial="hidden" animate="visible" className="space-y-5 sm:space-y-10">
           <motion.button
             variants={slideUp}
             custom={0}
@@ -227,50 +227,50 @@ export default function Projeto() {
           <motion.section
             variants={slideUp}
             custom={1}
-            className={`p-7 sm:p-10 rounded-3xl ${cardSurface}`}
+            className={`p-4 sm:p-10 rounded-2xl sm:rounded-3xl ${cardSurface}`}
           >
-            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center">
-              <div className="space-y-4">
-                <span className="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 text-xs font-extrabold tracking-widest uppercase border border-sky-500/20">
-                  <Heart size={13} />
+            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-4 sm:gap-8 items-center">
+              <div className="space-y-2 sm:space-y-4">
+                <span className="inline-flex items-center gap-1.5 py-0.5 px-2.5 sm:py-1 sm:px-3 rounded-full bg-sky-500/10 text-sky-600 dark:text-sky-400 text-[11px] sm:text-xs font-extrabold tracking-widest uppercase border border-sky-500/20">
+                  <Heart size={12} />
                   Conheça o Projeto
                 </span>
                 <SplitText
                   text="Quem está por trás do Manual do NAO"
                   tag="h1"
                   delay={35}
-                  className="text-3xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight"
+                  className="text-2xl sm:text-4xl lg:text-5xl font-black text-neutral-900 dark:text-white tracking-tight leading-tight"
                 />
                 <BlurText
                   text="Conheça a equipe, o laboratório e os pilares educacionais que transformam o aprendizado com o robô humanoide NAO em uma trilha interativa e acessível."
                   tag="p"
                   delay={28}
-                  className="text-neutral-600 dark:text-neutral-400 leading-relaxed"
+                  className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 leading-snug sm:leading-relaxed"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                <div className="flex min-w-0 flex-col items-center justify-center rounded-2xl border border-sky-200/70 bg-sky-50/90 px-2 py-3 text-center sm:p-4 dark:border-sky-800/40 dark:bg-sky-950/35">
+                <div className="flex min-w-0 flex-col items-center justify-center rounded-xl sm:rounded-2xl border border-sky-200/70 bg-sky-50/90 px-2 py-2 text-center sm:p-4 dark:border-sky-800/40 dark:bg-sky-950/35">
                   <strong className="block whitespace-nowrap text-lg leading-none font-black text-sky-600 sm:text-2xl md:text-3xl dark:text-sky-400">
                     <CountUp to={teamMembers.length} />
                   </strong>
-                  <span className="mt-1.5 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:text-xs dark:text-neutral-300">
+                  <span className="mt-1 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:mt-1.5 sm:text-xs dark:text-neutral-300">
                     Integrantes
                   </span>
                 </div>
-                <div className="flex min-w-0 flex-col items-center justify-center rounded-2xl border border-orange-200/70 bg-orange-50/90 px-2 py-3 text-center sm:p-4 dark:border-orange-800/40 dark:bg-orange-950/30">
+                <div className="flex min-w-0 flex-col items-center justify-center rounded-xl sm:rounded-2xl border border-orange-200/70 bg-orange-50/90 px-2 py-2 text-center sm:p-4 dark:border-orange-800/40 dark:bg-orange-950/30">
                   <strong className="block whitespace-nowrap text-lg leading-none font-black text-orange-500 sm:text-2xl md:text-3xl">
                     <CountUp to={8} />
                   </strong>
-                  <span className="mt-1.5 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:text-xs dark:text-neutral-300">
+                  <span className="mt-1 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:mt-1.5 sm:text-xs dark:text-neutral-300">
                     Módulos
                   </span>
                 </div>
-                <div className="flex min-w-0 flex-col items-center justify-center rounded-2xl border border-emerald-200/70 bg-emerald-50/90 px-2 py-3 text-center sm:p-4 dark:border-emerald-800/40 dark:bg-emerald-950/30">
+                <div className="flex min-w-0 flex-col items-center justify-center rounded-xl sm:rounded-2xl border border-emerald-200/70 bg-emerald-50/90 px-2 py-2 text-center sm:p-4 dark:border-emerald-800/40 dark:bg-emerald-950/30">
                   <strong className="block whitespace-nowrap text-lg leading-none font-black text-emerald-600 sm:text-2xl md:text-3xl dark:text-emerald-400">
                     <CountUp to={100} suffix="%" />
                   </strong>
-                  <span className="mt-1.5 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:text-xs dark:text-neutral-300">
+                  <span className="mt-1 block max-w-full truncate text-[11px] font-bold text-neutral-600 sm:mt-1.5 sm:text-xs dark:text-neutral-300">
                     Acessível
                   </span>
                 </div>
