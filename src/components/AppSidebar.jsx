@@ -195,10 +195,10 @@ export default function AppSidebar({
       </aside>
 
       {/* Mobile Header */}
-      <header className="md:hidden sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b border-neutral-200/50 bg-white/90 px-3 shadow-sm backdrop-blur-xl dark:border-neutral-700/50 dark:bg-neutral-900 dark:backdrop-blur-none">
-        <div className="flex min-w-0 flex-1 items-center gap-2">
+      <header className="md:hidden sticky top-0 z-50 flex h-14 shrink-0 items-center justify-between gap-1.5 border-b border-neutral-200/50 bg-white/90 px-2.5 shadow-sm backdrop-blur-xl dark:border-neutral-700/50 dark:bg-neutral-900 dark:backdrop-blur-none">
+        <div className="flex min-w-8 flex-1 items-center gap-2 overflow-hidden">
           <span className="shrink-0"><NaoLogo size="sm" /></span>
-          <span className="hidden truncate font-extrabold text-neutral-900 min-[420px]:inline dark:text-white">
+          <span className="hidden truncate font-extrabold text-neutral-900 min-[480px]:inline dark:text-white">
             Manual do NAO
           </span>
         </div>
@@ -213,7 +213,7 @@ export default function AppSidebar({
               onClick={() => onChangeTextScale(textScale + 1)}
               disabled={textScale >= 3}
               aria-label="Aumentar tamanho da fonte"
-              className="px-2 py-1.5 rounded-lg text-xs font-black text-neutral-800 dark:text-white hover:bg-white dark:hover:bg-neutral-700 disabled:opacity-40"
+              className="px-2 py-1.5 rounded-lg text-[12px] leading-none font-black text-neutral-800 dark:text-white hover:bg-white dark:hover:bg-neutral-700 disabled:opacity-40"
             >
               A+
             </button>
@@ -223,7 +223,7 @@ export default function AppSidebar({
               onClick={() => onChangeTextScale(textScale - 1)}
               disabled={textScale <= 0}
               aria-label="Diminuir tamanho da fonte"
-              className="px-2 py-1.5 rounded-lg text-xs font-black text-neutral-800 dark:text-white hover:bg-white dark:hover:bg-neutral-700 disabled:opacity-40"
+              className="px-2 py-1.5 rounded-lg text-[12px] leading-none font-black text-neutral-800 dark:text-white hover:bg-white dark:hover:bg-neutral-700 disabled:opacity-40"
             >
               A-
             </button>
@@ -232,16 +232,16 @@ export default function AppSidebar({
         <Link
           href={dashboard.href}
           aria-current={dashboard.active ? "page" : undefined}
-          className={`inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl px-2.5 text-sm font-bold transition-colors ${dashboard.active ? "bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300" : "text-neutral-800 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-800"}`}
+          className={`inline-flex h-10 shrink-0 items-center gap-1 rounded-xl px-2 text-[13px] font-bold whitespace-nowrap transition-colors ${dashboard.active ? "bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300" : "text-neutral-800 hover:bg-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-800"}`}
         >
-          <House size={18} aria-hidden="true" /> {dashboard.label}
+          <House size={16} aria-hidden="true" /> {dashboard.label}
         </Link>
         <button
           type="button"
           popoverTarget="mobile-site-menu"
-          className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl bg-neutral-100 px-3 text-sm font-bold text-neutral-800 transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700"
+          className="inline-flex h-10 shrink-0 items-center gap-1 rounded-xl bg-neutral-100 px-2.5 text-[13px] font-bold whitespace-nowrap text-neutral-800 transition-colors hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-100 dark:hover:bg-neutral-700"
         >
-          <Menu size={18} aria-hidden="true" /> Menu
+          <Menu size={16} aria-hidden="true" /> Menu
         </button>
 
         <div
