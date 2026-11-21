@@ -39,11 +39,6 @@ const teamMembers = [
   { name: "Integrante 01", role: "Pesquisa e conteúdo", area: "Conteúdo", initials: "01", color: "from-sky-400 to-blue-600" },
   { name: "Integrante 02", role: "Desenvolvimento web", area: "Engenharia", initials: "02", color: "from-indigo-500 to-violet-600" },
   { name: "Integrante 03", role: "Experiência educacional", area: "Pedagogia", initials: "03", color: "from-amber-400 to-orange-500" },
-  { name: "Integrante 04", role: "Robótica educacional", area: "Robótica", initials: "04", color: "from-emerald-400 to-teal-600" },
-  { name: "Integrante 05", role: "Design e interface", area: "UI / UX", initials: "05", color: "from-sky-500 to-cyan-600" },
-  { name: "Integrante 06", role: "Documentação técnica", area: "Docs", initials: "06", color: "from-violet-500 to-purple-600" },
-  { name: "Integrante 07", role: "Testes e validação", area: "Qualidade", initials: "07", color: "from-orange-500 to-rose-500" },
-  { name: "Integrante 08", role: "Apoio pedagógico", area: "Ensino", initials: "08", color: "from-teal-500 to-emerald-600" },
 ];
 
 const projectContexts = [
@@ -163,7 +158,7 @@ export default function Projeto() {
               <div className="grid grid-cols-3 gap-3">
                 <div className="p-4 rounded-2xl bg-sky-50/90 dark:bg-sky-950/35 border border-sky-200/70 dark:border-sky-800/40 text-center">
                   <strong className="block text-2xl sm:text-3xl font-black text-sky-600 dark:text-sky-400">
-                    <CountUp to={8} />
+                    <CountUp to={teamMembers.length} />
                   </strong>
                   <span className="text-xs font-bold text-neutral-600 dark:text-neutral-300 mt-1 block">
                     Integrantes
@@ -243,7 +238,7 @@ export default function Projeto() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {teamMembers.map((member, i) => (
                 <motion.div key={member.name} variants={slideUp} custom={i * 0.4 + 6}>
                   <SpotlightCard className={`p-5 rounded-2xl h-full ${cardSurface} hover:-translate-y-1 transition-transform duration-300`}>
