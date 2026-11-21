@@ -79,32 +79,30 @@ export default function PerfilMobile({ name, email, roleLabel, progress, visualL
           </div>
         </section>
 
-        <section aria-labelledby="profile-robot" className="flex flex-col rounded-2xl border border-sky-400/30 bg-gradient-to-br from-sky-900 to-slate-950 px-3.5 pt-2 text-white shadow-sm sm:px-4 sm:pt-3">
-          <div className="flex min-h-[clamp(6.25rem,16dvh,7.25rem)] flex-1 items-center gap-3 pb-1">
-            <div className="grid w-[48%] max-w-48 shrink-0 place-items-center self-stretch rounded-xl bg-white/5 [container-type:size]">
-              <div className="relative aspect-[1053/1494] h-[min(100cqh,142cqw)] max-w-full">
-                <Image src="/nao-3d-construcao.png" fill sizes={robotSizes} alt="Robô NAO em construção" className="object-contain grayscale opacity-50" />
+        <section aria-labelledby="profile-robot" className="flex flex-col rounded-2xl border border-sky-400/30 bg-gradient-to-br from-sky-900 to-slate-950 px-3.5 pt-3 text-white shadow-sm sm:px-4 sm:pt-4">
+          <div className="flex items-center justify-between gap-2 pb-2">
+            <h2 id="profile-robot" className="flex items-center gap-1.5 text-sm font-bold text-sky-100 sm:text-base">
+              <Bot size={17} className="shrink-0 text-sky-300" aria-hidden="true" /> Seu robô NAO
+            </h2>
+            <p className="text-xl font-black tabular-nums text-white sm:text-2xl">{overallProgress}%</p>
+          </div>
+          <div className="mb-2.5 grid h-[clamp(13rem,34dvh,18rem)] w-full place-items-center rounded-xl bg-white/5 p-2 [container-type:size]">
+            <div className="relative aspect-[1053/1494] h-[min(100cqh,142cqw)] max-w-full">
+              <Image src="/nao-3d-construcao.png" fill sizes={robotSizes} alt="Robô NAO em construção" className="object-contain grayscale opacity-50" />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 motion-safe:transition-[clip-path] duration-1000 ease-out"
+                style={{ clipPath: `inset(${100 - visualLevel}% 0 0 0)` }}
+              >
+                <Image src="/nao-3d-construcao.png" fill sizes={robotSizes} alt="" className="object-contain" />
+              </div>
+              {visualLevel > 0 && (
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 motion-safe:transition-[clip-path] duration-1000 ease-out"
-                  style={{ clipPath: `inset(${100 - visualLevel}% 0 0 0)` }}
-                >
-                  <Image src="/nao-3d-construcao.png" fill sizes={robotSizes} alt="" className="object-contain" />
-                </div>
-                {visualLevel > 0 && (
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-x-0 h-px bg-amber-300 shadow-[0_0_8px_2px_rgba(251,146,60,0.5)] motion-safe:transition-[bottom] duration-1000"
-                    style={{ bottom: `${visualLevel}%` }}
-                  />
-                )}
-              </div>
-            </div>
-            <div className="min-w-0">
-              <h2 id="profile-robot" className="flex items-center gap-1.5 text-sm font-bold text-sky-100 sm:text-base">
-                <Bot size={16} className="shrink-0 text-sky-300" aria-hidden="true" /> Seu robô NAO
-              </h2>
-              <p className="mt-1 text-2xl font-black tabular-nums">{overallProgress}%</p>
+                  className="absolute inset-x-0 h-px bg-amber-300 shadow-[0_0_8px_2px_rgba(251,146,60,0.5)] motion-safe:transition-[bottom] duration-1000"
+                  style={{ bottom: `${visualLevel}%` }}
+                />
+              )}
             </div>
           </div>
           <details className="border-t border-white/20">
