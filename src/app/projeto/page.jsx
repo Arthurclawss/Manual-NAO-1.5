@@ -28,6 +28,7 @@ import SplitText from "@/components/SplitText";
 import BlurText from "@/components/BlurText";
 import CountUp from "@/components/CountUp";
 import NaoLogo from "@/components/NaoLogo";
+import ProjetoContatoForm from "@/components/ProjetoContatoForm";
 
 const slideUp = {
   hidden: { opacity: 0, y: 18 },
@@ -131,11 +132,10 @@ function MobileCarousel({ items, renderItem, label, breakpoint = "sm" }) {
               onClick={() => scrollToIndex(i)}
               aria-label={`Ir para slide ${i + 1}`}
               aria-current={activeIndex === i ? "true" : undefined}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                activeIndex === i
-                  ? "w-6 bg-sky-500"
-                  : "w-2 bg-neutral-300 dark:bg-neutral-700"
-              }`}
+              className={`h-2 rounded-full transition-all duration-300 ${activeIndex === i
+                ? "w-6 bg-sky-500"
+                : "w-2 bg-neutral-300 dark:bg-neutral-700"
+                }`}
             />
           ))}
         </div>
@@ -418,6 +418,10 @@ export default function Projeto() {
               </button>
             </div>
           </motion.section>
+
+          <motion.div variants={slideUp} custom={11}>
+            <ProjetoContatoForm cardSurface={cardSurface} />
+          </motion.div>
         </motion.div>
 
         {/* Footer */}
