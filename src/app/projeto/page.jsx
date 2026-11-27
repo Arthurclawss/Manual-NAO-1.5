@@ -28,7 +28,6 @@ import SplitText from "@/components/SplitText";
 import BlurText from "@/components/BlurText";
 import CountUp from "@/components/CountUp";
 import NaoLogo from "@/components/NaoLogo";
-import ProjetoContatoForm from "@/components/ProjetoContatoForm";
 
 const slideUp = {
   hidden: { opacity: 0, y: 18 },
@@ -418,10 +417,6 @@ export default function Projeto() {
               </button>
             </div>
           </motion.section>
-
-          <motion.div variants={slideUp} custom={11}>
-            <ProjetoContatoForm cardSurface={cardSurface} />
-          </motion.div>
         </motion.div>
 
         {/* Footer */}
